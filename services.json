@@ -16,8 +16,8 @@
       }
     },
     {
-      "name": "test",
-      "gitUrl": "test",
+      "name": "bulk-scan-payment-processor",
+      "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
       "substitutions": {}
     }

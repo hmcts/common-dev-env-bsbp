@@ -29,16 +29,3 @@ while true; do
           exit;;
     esac
 done
-
-
-#common-dev-env-bsbp
-#
-#  yaml
-#
-#    services
-#      one
-#        github repo: example
-#        type: java
-#      two
-#        github repo: example
-
