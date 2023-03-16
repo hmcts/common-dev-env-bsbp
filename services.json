@@ -13,13 +13,15 @@
         "DB_CONN_OPTIONS": "",
         "FLYWAY_SKIP_MIGRATIONS": false,
         "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *"
-      }
+      },
+      "files_required": ["create-env-file.sh", "setup-env.sh"]
     },
     {
       "name": "bulk-scan-payment-processor",
       "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
-      "substitutions": {}
+      "substitutions": {},
+      "files_required": ["create-env-file.sh", "setup-env.sh"]
     }
   ]
 }

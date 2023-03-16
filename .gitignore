@@ -1,3 +1,6 @@
 __pycache__
 .idea
 .DS_Store
+dev_env/apps/**
+__azurite_db_queue__.json
+__azurite_db_queue_extent__.json
