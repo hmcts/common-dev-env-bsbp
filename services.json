@@ -4,7 +4,7 @@
       "name": "bulk-scan-orchestrator",
       "gitUrl": "git@github.com:hmcts/bulk-scan-orchestrator.git",
       "type": "java",
-      "substitutions": {
+      "envVarSubstitutions": {
         "DB_PASSWORD": "bulk_scan_orchestrator",
         "DB_USER": "bulk_scan_orchestrator",
         "DB_HOST": "localhost",
@@ -14,14 +14,14 @@
         "FLYWAY_SKIP_MIGRATIONS": false,
         "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *"
       },
-      "files_required": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     },
     {
       "name": "bulk-scan-payment-processor",
       "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
-      "substitutions": {},
-      "files_required": ["create-env-file.sh", "setup-env.sh"]
+      "envVarSubstitutions": {},
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     }
   ]
 }

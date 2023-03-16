@@ -16,7 +16,6 @@ def copy_file_from_to(from_directory: str, to_directory: str, file_name: str):
         call_command('cp %s/%s %s/%s' % (from_directory, file_name, to_directory, file_name))
         logging.debug('Finished copying file %s from %s to %s' % (file_name, from_directory, to_directory))
 
-
 def call_command(command: str):
     command_response = subprocess.run(command.split(), capture_output=True)
     if command_response.returncode > 0:
