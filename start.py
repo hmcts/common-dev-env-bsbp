@@ -9,7 +9,8 @@ def setup_services():
                 os.path.dirname(os.path.realpath(__file__)), 
                 service['scriptsRequired'] if 'scriptsRequired' in service else [], 
                 service['envVarSubstitutions'] if 'envVarSubstitutions' in service else {},
-                service['keyVault'] if 'keyVault' in service else {})
+                service['keyVault'] if 'keyVault' in service else {}, 
+                service['type'] if 'type' in service else '')
 
 if __name__ == "__main__":
     setup_services()

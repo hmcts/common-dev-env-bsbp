@@ -34,14 +34,11 @@ def copy_environment_vars(dir_path: str, environment_vars: dict, service_name: s
     else: 
         logger.info('Skipping creating env sub file for %s as file %s currently exists' % (service_name, file_name)) 
 
-def run_script_files(file_path: str, list_of_files: list, service_name: str, key_vault: str):
-
-    logger.info('test runs')
-
+def run_script_files(file_path: str, list_of_files: list, service_name: str, key_vault: str, service_type: str):
     if len(list_of_files) >= 2 and 'setup-env.sh' in list_of_files and 'create-env-file.sh' in list_of_files:
         logger.info('Found both create-env-file and setup-env scripts, so running the latter only, which also calls the prior')
-        call_command('sudo %s/setup-env.sh %s %s aat' % (file_path, key_vault, service_name))
-    # else: 
-    #     logger.info('Calling scripts: %s for %s' % (list_of_files, service_name))
-    #     for file in list_of_files:
-    #         call_command('sudo ./%s/%s %s %s aat' % (file_path, file, key_vault, service_name))
+        call_command('sudo %s/setup-env.sh %s %s aat %s %s' % (file_path, key_vault, service_name, service_type, 'y'))
+    else: 
+        logger.info('Calling scripts: %s for %s' % (list_of_files, service_name))
+        for file in list_of_files:
+            call_command('sudo ./%s/%s %s %s aat' % (file_path, file, key_vault, service_name))

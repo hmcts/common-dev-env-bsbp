@@ -40,7 +40,6 @@ echo "# ----------------------- "
 echo "# Populating substitutions to env file on ""$(date)"
 
 IFS=$'\n'; set -f; SUBS_KEYS_ARRAY=($(<${MY_PATH}/substitutions.json))
-echo "${#SUBS_KEYS_ARRAY[@]}"
 
 for ((i=0; i <= "${#SUBS_KEYS_ARRAY[@]}"-3; i+=1)) do
   SUB_PLACEHOLDER="${SUBS_KEYS_ARRAY[$((i+1))]}"

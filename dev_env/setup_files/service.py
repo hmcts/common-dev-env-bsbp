@@ -2,12 +2,12 @@ from dev_env.setup_files.repo_setup import create_repo_if_required, copy_script_
 from dev_env.setup_files.logging.logger import logger
 from os import walk
 
-def setup_service(service, dir :str, scripts_required: list, env_var_substitutions: dict, key_vault: str):
+def setup_service(service, dir :str, scripts_required: list, env_var_substitutions: dict, key_vault: str, service_type: str):
     logger.info('Installing %s' % (service['name']))
-    orchestrate_service_setup(service, dir, scripts_required, env_var_substitutions, key_vault)
+    orchestrate_service_setup(service, dir, scripts_required, env_var_substitutions, key_vault, service_type)
     logger.info('Finished installing %s' % (service['name']))
 
-def orchestrate_service_setup(service, dir :str, scripts_required: list, env_var_substitutions: dict, key_vault: str):
+def orchestrate_service_setup(service, dir :str, scripts_required: list, env_var_substitutions: dict, key_vault: str, service_type: str):
     service_name = service['name']
     file_path_of_service = '%s/dev_env/apps/%s' % (dir, service_name)
 
@@ -21,4 +21,5 @@ def orchestrate_service_setup(service, dir :str, scripts_required: list, env_var
     run_script_files('%s/bin' % (file_path_of_service), 
         next(walk('%s/bin' % (file_path_of_service)), (None, None, []))[2], 
         service_name, 
-        key_vault)
+        key_vault, 
+        service_type)
