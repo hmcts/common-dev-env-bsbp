@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-# Script to create a .localenv file
+# Script to create a .env file
 # Format of command: sudo ./create-env-file.sh <key vault> <service name (in the chart yaml)> <env>
 # Example of use: sudo ./create-env-file.sh bulk-scan bulk-scan-orchestrator aat
 # Author/contact for updating: Adam Stevenson
 
 # Refresh env file by removing one if it currently exists
-rm ../.localenv
+MY_PATH="$(dirname -- "${BASH_SOURCE[0]}")"
+PARENT_PATH="$(dirname "${MY_PATH}")"
+
+rm ${PARENT_PATH}/.env
 
 KEY_VAULT="${1}"
 SERVICE_NAME="${2}"
@@ -30,13 +33,14 @@ function store_secret() {
     local SECRET_TO_WRITE="${SECRET_VAR}=${SECRET_VALUE}"
     SECRET_TO_WRITE=$(echo "${SECRET_TO_WRITE}" | tr -d '"' )
     echo "${SECRET_TO_WRITE}"
-    echo "${SECRET_TO_WRITE}" >> ../.localenv
+    echo "${SECRET_TO_WRITE}" >> ${PARENT_PATH}/.env
 }
 
 echo "# ----------------------- "
-echo "# Populating substitutions to localenv file on ""$(date)"
+echo "# Populating substitutions to env file on ""$(date)"
 
-IFS=$'\n'; set -f; SUBS_KEYS_ARRAY=($(<substitutions.json))
+IFS=$'\n'; set -f; SUBS_KEYS_ARRAY=($(<${MY_PATH}/substitutions.json))
+echo "${#SUBS_KEYS_ARRAY[@]}"
 
 for ((i=0; i <= "${#SUBS_KEYS_ARRAY[@]}"-3; i+=1)) do
   SUB_PLACEHOLDER="${SUBS_KEYS_ARRAY[$((i+1))]}"
@@ -49,15 +53,15 @@ for ((i=0; i <= "${#SUBS_KEYS_ARRAY[@]}"-3; i+=1)) do
   SUB_VALUE="${SUB_VALUE:1}"
   SUB_COMBINED="${SUB_NAME}=${SUB_VALUE}"
   echo "${SUB_COMBINED}"
-  echo "${SUB_COMBINED}" >> ../.localenv
+  echo "${SUB_COMBINED}" >> ${PARENT_PATH}/.env
 done
 echo "# End of substitutions "
 echo "# ----------------------- "
 echo "# ----------------------- "
-echo "# Populating secrets to localenv file from ${KEY_VAULT} on ""$(date)"
+echo "# Populating secrets to env file from ${KEY_VAULT} on ""$(date)"
 
 # Secrets from Azure listed in chart, excluding substitutions
-SECRETS=$(yq eval ".java.keyVaults.${KEY_VAULT}.secrets[]" ../charts/"${SERVICE_NAME}"/values.yaml)
+SECRETS=$(yq eval ".java.keyVaults.${KEY_VAULT}.secrets[]" ${PARENT_PATH}/charts/"${SERVICE_NAME}"/values.yaml)
 SECRETS=${SECRETS//alias: /}
 SECRETS=${SECRETS//name: /}
 SECRETS_AS_ARRAY=("${x//\n/}")
@@ -82,10 +86,10 @@ echo "# End of fetched secrets. "
 echo "# ----------------------- "
 
 echo "# ----------------------- "
-echo "# Populating environment variables from chart to localenv file from ${KEY_VAULT} on ""$(date)"
+echo "# Populating environment variables from chart to env file from ${KEY_VAULT} on ""$(date)"
 
 # Get environment var list from chart, and save to file. Loop through as we need to exclude substitutions
-ENVIRONMENT_LIST=$(yq eval ".java.environment" ../charts/"${SERVICE_NAME}"/values.yaml)
+ENVIRONMENT_LIST=$(yq eval ".java.environment" ${PARENT_PATH}/charts/"${SERVICE_NAME}"/values.yaml)
 ENVIRONMENT_LIST=$(echo "${ENVIRONMENT_LIST}" | tr -d '"' )
 ENVIRONMENT_LIST=$(echo "${ENVIRONMENT_LIST}" | tr -d '{{')
 ENVIRONMENT_LIST=$(echo "${ENVIRONMENT_LIST}" | tr -d '}}')
@@ -103,14 +107,14 @@ for ((i=0; i <= ENV_LENGTH-1; i++)) do
   ENV_NAME_AND_VALUE="${ENV_NAME}=${ENV_VALUE}"
   if [[ ! " ${SUBS_KEYS_ARRAY[*]} " =~ ${ENV_NAME} ]]; then
     echo "${ENV_NAME_AND_VALUE}"
-    echo "${ENV_NAME_AND_VALUE}" >> ../.localenv
+    echo "${ENV_NAME_AND_VALUE}" >> ${PARENT_PATH}/.env
   else
     echo "Ignoring ${ENV_NAME} as it is listed within substitutions.json"
   fi
 done
 
 # Give ownership of file to allow editing if needed
-chmod 775 ../.localenv
+chmod 775 ${PARENT_PATH}/.env
 
 echo "# End of fetched environment variables. "
 echo "# ----------------------- "

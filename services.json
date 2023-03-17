@@ -14,6 +14,7 @@
         "FLYWAY_SKIP_MIGRATIONS": false,
         "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *"
       },
+      "keyVault": "bulk-scan",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     },
     {
@@ -21,6 +22,7 @@
       "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
       "envVarSubstitutions": {},
+      "keyVault": "bulk-scan",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     }
   ]
