@@ -3,6 +3,7 @@ import argparse
 import os
 from dev_env.setup_files.service import setup_service
 from dev_env.setup_files.utils.utils import query_yes_no
+from dev_env.setup_files.utils.prompts import run_db_only
 
 def setup_services(all_docker_per_service: bool):
     with open('services.json') as file:
@@ -15,30 +16,18 @@ def setup_services(all_docker_per_service: bool):
                 service['type'] if 'type' in service else '', 
                 all_docker_per_service)
 
-def determine_action_based_on_command(command: str, service_name: str):
-    pass
+def determine_action_based_on_command(command: str):
+    # Run all services: no args, default
+    if len(command) == 0 and query_yes_no('Do you want to clone and install all services?'):
+        setup_services('y') if run_db_only() else setup_services('n')
+
+    # Run all services: specific args: [start.py start service all]
+    elif len(command) == 3 and 'start' in command and 'service' in command and 'all' in command:
+        setup_services('y') if run_db_only() else setup_services('n')
 
 if __name__ == "__main__":
-
-
-    # Sys 1 = command name
-    # Sys 2 = service name 
-
-    # no args = all
-    # services all = all
-
-    parser = argparse.ArgumentParser(description='Process some integers.')
-
-    parser.add_argument('command', nargs='*', default=[], help='BAR!')
-
-    args = parser.parse_args()
-    # print(args.accumulate(args.types.value))
-    print(vars(args))
-
-
-
-    if len(vars(args)['command']) == 0 and query_yes_no('Do you want to clone and install all services?'):
-        setup_services('y') if query_yes_no('%s %s' % ('For each service, do you want to only spin up the database?',
-            'y = db only, n = all docker services listed in docker compose yml')) else setup_services('n')
-
-    # determine_action_based_on_command(sys.argv[1], sys.argv[2])
+    parser = argparse.ArgumentParser(description='Run arguments for dev-env')
+    parser.add_argument('command', nargs='*', default=[], help='%s | %s' % ( \
+        '1) start service all (start all services)', 
+        '2) <no args> (default, prompt to start all services)'))
+    determine_action_based_on_command(vars(parser.parse_args())['command'])
