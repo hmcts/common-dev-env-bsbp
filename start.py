@@ -5,20 +5,20 @@ from dev_env.setup_files.service import setup_service
 from dev_env.setup_files.utils.utils import query_yes_no
 from dev_env.setup_files.utils.prompts import run_db_only
 
-def setup_all_services(all_docker_per_service: bool):
+def setup_all_services(db_only_per_service: bool):
     with open('services.json') as file:
         for service in json.load(file)['services']: 
             setup_service(service, 
                 os.path.dirname(os.path.realpath(__file__)),
-                all_docker_per_service)
+                db_only_per_service)
 
-def setup_one_service(all_docker_per_service: bool, service_name: str):
+def setup_one_service(db_only_per_service: bool, service_name: str):
     with open('services.json') as file:
         service_json = [a for a in json.load(file)['services'] if a['name']==service_name]
         quit('%s is not found within services.json, exiting...' % (service_name)) \
             if not service_json else setup_service(service_json[0], 
                 os.path.dirname(os.path.realpath(__file__)),
-                all_docker_per_service)
+                db_only_per_service)
 
 def determine_action_based_on_command(command: str):
     # Run all services: no args, default
