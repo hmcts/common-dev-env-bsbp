@@ -1,4 +1,4 @@
-from dev_env.setup_files.repo_setup import create_repo_if_required, copy_script_files, copy_environment_vars, run_script_files
+from dev_env.setup_files.orchestrator.repo_setup import create_repo_if_required, copy_script_files, copy_environment_vars, run_script_files
 from dev_env.setup_files.logging.logger import logger
 from os import walk
 

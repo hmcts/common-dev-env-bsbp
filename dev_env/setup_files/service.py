@@ -1,5 +1,4 @@
 from dev_env.setup_files.orchestrator.orchestrator import orchestrate_service
-from os import walk
 import json
 
 def setup_all_services(db_only_per_service: bool, file_path: str):
