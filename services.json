@@ -24,6 +24,22 @@
       "envVarSubstitutions": {},
       "keyVault": "bulk-scan",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+    },
+    {
+      "name": "bulk-scan-processor",
+      "gitUrl": "git@github.com:hmcts/bulk-scan-processor.git",
+      "type": "java",
+      "envVarSubstitutions": {
+        "DB_PASSWORD": "bulk_scan_processor",
+        "DB_USER": "bulk_scan_processor",
+        "DB_HOST": "localhost",
+        "DB_PORT": 5435,
+        "DB_NAME": "bulk_scan_processor",
+        "DB_CONN_OPTIONS": "",
+        "FLYWAY_SKIP_MIGRATIONS": false
+      },
+      "keyVault": "bulk-scan",
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     }
   ]
 }

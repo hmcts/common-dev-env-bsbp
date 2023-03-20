@@ -1,10 +1,13 @@
-from dev_env.setup_files.utils.utils import does_file_exist, does_path_exist, call_command, copy_file_from_to
+from dev_env.setup_files.utils.utils import does_file_exist, does_path_exist, call_command, copy_file_from_to, run_command
 from dev_env.setup_files.logging.logger import logger
 import json
 
 def create_repo_if_required(service_name: str, file_path: str, git_url: str):
     if does_path_exist(file_path):
         logger.info('Skipping git clone as %s folder already exists' % (file_path)) 
+
+
+
         # TODO: check if a git pull is required and prompt if so. How far behind and such 
     else: 
         logger.info('Cloning %s to %s' % (service_name, file_path)) 
@@ -16,6 +19,10 @@ def get_github_branch():
 def copy_script_files(dir_path: str, service_name: str, scripts_required: list):
     file_from_path = '%s/dev_env/setup_files/scripts/' % (dir_path)
     file_to_path = '%s/dev_env/apps/%s/bin/' % (dir_path, service_name)    
+
+    if not does_path_exist(file_to_path):
+        logger.info('Making bin folder for %s as it does not exist' % (service_name))
+        run_command('mkdir %s' % (file_to_path))
 
     for file in scripts_required:
         copy_script_file(file_to_path, file_from_path, service_name, file)
