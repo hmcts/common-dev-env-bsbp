@@ -1,6 +1,6 @@
 import subprocess
 import sys
-import logging
+from dev_env.setup_files.logging.logger import logger
 import os
 import threading
 
@@ -21,11 +21,11 @@ def does_file_exist(file_path:str, file_name:str):
 
 def copy_file_from_to(from_directory: str, to_directory: str, file_name: str):
     if does_file_exist(to_directory, file_name):
-        logging.info('Skipping copying files, as they currently exist')
+        logger.info('Skipping copying files, as they currently exist')
     else: 
-        logging.debug('Copying file %s from %s to %s' % (file_name, from_directory, to_directory))
+        logger.debug('Copying file %s from %s to %s' % (file_name, from_directory, to_directory))
         call_command('cp %s/%s %s/%s' % (from_directory, file_name, to_directory, file_name))
-        logging.debug('Finished copying file %s from %s to %s' % (file_name, from_directory, to_directory))
+        logger.debug('Finished copying file %s from %s to %s' % (file_name, from_directory, to_directory))
 
 def query_yes_no(question: str, default="yes"):
     valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}

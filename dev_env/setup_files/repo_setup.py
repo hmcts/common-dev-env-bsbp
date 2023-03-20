@@ -6,14 +6,13 @@ def create_repo_if_required(service_name: str, file_path: str, git_url: str):
     if does_path_exist(file_path):
         logger.info('Skipping git clone as %s folder already exists' % (file_path)) 
 
-
-
         # TODO: check if a git pull is required and prompt if so. How far behind and such 
     else: 
         logger.info('Cloning %s to %s' % (service_name, file_path)) 
         call_command('git clone %s %s' % (git_url, file_path))
 
 def get_github_branch():
+    # TODO: check this and add github check to do pull and prompt for command if so
     pass
 
 def copy_script_files(dir_path: str, service_name: str, scripts_required: list):
@@ -46,6 +45,10 @@ def copy_environment_vars(dir_path: str, environment_vars: dict, service_name: s
         logger.info('Skipping creating env sub file for %s as file %s currently exists' % (service_name, file_name)) 
 
 def run_script_files(file_path: str, list_of_files: list, service_name: str, key_vault: str, service_type: str, all_docker_per_service: bool):
+    
+    # TODO: if we have both files, and .env exists, ask user if they want to replace the contents (i.e re-run script)
+    # TODO: if they want to up the service in docker, but not want to recreate the .env file, add that options to script
+    
     if len(list_of_files) >= 2 and 'setup-env.sh' in list_of_files and 'create-env-file.sh' in list_of_files:
         logger.info('Found both create-env-file and setup-env scripts, so running the latter only, which also calls the prior')
         call_command('sudo %s/setup-env.sh %s %s aat %s %s' % (file_path, key_vault, service_name, service_type, all_docker_per_service))
