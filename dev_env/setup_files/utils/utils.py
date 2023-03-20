@@ -1,4 +1,5 @@
 import subprocess
+import sys
 import logging
 import os
 import threading
@@ -26,17 +27,28 @@ def copy_file_from_to(from_directory: str, to_directory: str, file_name: str):
         call_command('cp %s/%s %s/%s' % (from_directory, file_name, to_directory, file_name))
         logging.debug('Finished copying file %s from %s to %s' % (file_name, from_directory, to_directory))
 
+def query_yes_no(question: str, default="yes"):
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
+    if default is None:
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
+    elif default == "no":
+        prompt = " [y/N] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while True:
+        sys.stdout.write(question + prompt)
+        choice = input().lower()
+        if default is not None and choice == "":
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' " "(or 'y' or 'n').\n")
+
 def call_command(command: str):
-    # command_response = subprocess.run(command.split(), capture_output=True, text=True, input="y")
     thread = threading.Thread(target=run_command, args=(command,))
     thread.start()
     thread.join()
-
-    # if command_response.returncode > 0:
-    #     logging.error('return code from command %s is %s with response %s' 
-    #         % (command, command_response.returncode, command_response.stdout))
-    #     quit()
-    # else:
-    #     logging.debug('return code from command %s is %s with response %s' 
-    #         % (command, command_response.returncode, command_response.stdout))
-    #     return command_response
