@@ -30,5 +30,3 @@ def orchestrate_service_setup(service, dir :str, db_only_for_service: bool, prom
         service_type, 
         db_only_for_service, 
         prompt_to_create_env)
-
-    # TODO: add .env etc to git ignore folder for each service if it doesnt exist there
