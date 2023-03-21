@@ -6,12 +6,14 @@ import threading
 
 def run_command(command):
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+    response = []
     while True:
         output = process.stdout.readline()
         if output == b'' and process.poll() is not None:
-            break
+            return response
         if output:
-            print(output.strip().decode('utf-8'))
+            response.append(output.strip().decode('utf-8'))
+            logger.info(output.strip().decode('utf-8'))
 
 def does_path_exist(file_path: str):
     return os.path.isdir(file_path)

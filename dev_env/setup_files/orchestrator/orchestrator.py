@@ -1,4 +1,4 @@
-from dev_env.setup_files.orchestrator.repo_setup import create_repo_if_required, copy_script_files, copy_environment_vars, run_script_files
+from dev_env.setup_files.orchestrator.repo_setup import create_repo_if_required, copy_script_files, copy_environment_vars, run_script_files, check_gitignore_file
 from dev_env.setup_files.logging.logger import logger
 from os import walk
 
@@ -22,6 +22,7 @@ def orchestrate_service_setup(service, dir :str, db_only_for_service: bool, prom
     copy_environment_vars(dir, serivce_env_var_subs, service_name) \
         if (len(serivce_env_var_subs) > 0) \
         else logger.info('No env vars found for %s' % (service_name))
+    check_gitignore_file(file_path_of_service)
     run_script_files('%s/bin' % (file_path_of_service), 
         next(walk('%s/bin' % (file_path_of_service)), (None, None, []))[2], 
         service_name, 
