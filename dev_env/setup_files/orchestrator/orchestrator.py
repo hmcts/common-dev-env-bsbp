@@ -2,12 +2,12 @@ from dev_env.setup_files.orchestrator.repo_setup import create_repo_if_required,
 from dev_env.setup_files.logging.logger import logger
 from os import walk
 
-def orchestrate_service(service, dir :str, db_only_for_service: bool):
+def orchestrate_service(service, dir :str, db_only_for_service: bool, prompt_to_create_env: bool):
     logger.info('Installing %s' % (service['name']))
-    orchestrate_service_setup(service, dir, db_only_for_service)
+    orchestrate_service_setup(service, dir, db_only_for_service, prompt_to_create_env)
     logger.info('Finished installing %s' % (service['name']))
 
-def orchestrate_service_setup(service, dir :str, db_only_for_service: bool):
+def orchestrate_service_setup(service, dir :str, db_only_for_service: bool, prompt_to_create_env: bool):
     service_name = service['name']
     service_type = service['type']
     serivce_env_var_subs = service['envVarSubstitutions'] if 'envVarSubstitutions' in service else {}
@@ -27,6 +27,7 @@ def orchestrate_service_setup(service, dir :str, db_only_for_service: bool):
         service_name, 
         service_key_vault, 
         service_type, 
-        db_only_for_service)
+        db_only_for_service, 
+        prompt_to_create_env)
 
     # TODO: add .env etc to git ignore folder for each service if it doesnt exist there

@@ -1,21 +1,30 @@
 #!/usr/bin/env bash
 
 # Main script for setting up environment
-# Format of command: sudo ./setup-env.sh <key vault> <service name (in the chart yaml)> <env> <service type> <db only>
-# Example of use: sudo ./setup-env.sh bulk-scan bulk-scan-orchestrator aat java y
+# Format of command: sudo ./setup-env.sh <key vault> <service name (in the chart yaml)> <env> <service type> <db only> <create env file prompt>
+# Example of use: sudo ./setup-env.sh bulk-scan bulk-scan-orchestrator aat java y y
 # Author/contact for updating: Adam Stevenson
 KEY_VAULT="${1}"
 SERVICE_NAME="${2}"
 ENV="${3}"
 SERVICE_TYPE="${4}"
 DB_ONLY="${5}"
+CREATE_ENV_PROMPT="${6}"
 
 MY_PATH="$(dirname -- "${BASH_SOURCE[0]}")"
 PARENT_PATH="$(dirname "${MY_PATH}")"
 
-echo "Script setup-env.sh called to run docker components for ${SERVICE_NAME} with type of ${SERVICE_TYPE}. DB Only? ${DB_ONLY} " 
-
-sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}"
+if [[ ${CREATE_ENV_PROMPT} == 'y' ]]
+then 
+        read -p "Do you want to create a .env file? Yy/Nn " -n 1 -r
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+                echo "Script setup-env.sh called to run docker components for ${SERVICE_NAME} with type of ${SERVICE_TYPE}. DB Only? ${DB_ONLY} " 
+                sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}"
+        fi
+else 
+        sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}"
+fi
 
 if [ "${DB_ONLY}" != "y" ] 
 then
@@ -29,14 +38,14 @@ then
             cd ${MY_PATH}
         fi
         docker-compose -f ${PARENT_PATH}/docker-compose.yml down -v
-        docker-compose -f ${PARENT_PATH}/docker-compose.yml build --progress=plain
+        docker-compose -f ${PARENT_PATH}/docker-compose.yml build
         docker-compose -f ${PARENT_PATH}/docker-compose.yml up -d
         echo "Setup complete! You can manage these services now via normal docker commands. Double check all is well with docker-compose ps"
 else 
         echo "Installing db only if listed in docker compose yml for ${SERVICE_NAME}"
         sed -i '' 's/host.docker.internal/localhost/' ${PARENT_PATH}/.env
         docker compose -f ${PARENT_PATH}/docker-compose.yml down -v
-        docker compose -f ${PARENT_PATH}/docker-compose.yml build --progress=plain "${SERVICE_NAME}-db"
+        docker compose -f ${PARENT_PATH}/docker-compose.yml build "${SERVICE_NAME}-db"
         docker compose -f ${PARENT_PATH}/docker-compose.yml up -d "${SERVICE_NAME}-db"
         echo "Setup complete! Next step is to add the .env file through the ENV plugin and run the application afterwards"
 fi

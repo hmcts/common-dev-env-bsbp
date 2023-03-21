@@ -5,7 +5,7 @@ import os
 import threading
 
 def run_command(command):
-    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
     while True:
         output = process.stdout.readline()
         if output == b'' and process.poll() is not None:
