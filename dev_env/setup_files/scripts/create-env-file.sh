@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Script to create a .env file
-# Format of command: sudo ./create-env-file.sh <key vault> <service name (in the chart yaml)> <env>
-# Example of use: sudo ./create-env-file.sh bulk-scan bulk-scan-orchestrator aat
+# Format of command: sudo ./create-env-file.sh <key vault> <service name (in the chart yaml)> <env> <chart location>
+# Example of use: sudo ./create-env-file.sh bulk-scan bulk-scan-orchestrator aat bulk-scan-orchestrator
 # Author/contact for updating: Adam Stevenson
 
 # Refresh env file by removing one if it currently exists
@@ -14,6 +14,7 @@ rm ${PARENT_PATH}/.env
 KEY_VAULT="${1}"
 SERVICE_NAME="${2}"
 ENV="${3}"
+CHART_FOLDER="${4}"
 
 function fetch_secret_from_keyvault() {
     local SECRET_NAME=$1
@@ -60,7 +61,7 @@ echo "# ----------------------- "
 echo "# Populating secrets to env file from ${KEY_VAULT} on ""$(date)"
 
 # Secrets from Azure listed in chart, excluding substitutions
-SECRETS=$(yq eval ".java.keyVaults.${KEY_VAULT}.secrets[]" ${PARENT_PATH}/charts/"${SERVICE_NAME}"/values.yaml)
+SECRETS=$(yq eval ".java.keyVaults.${KEY_VAULT}.secrets[]" ${PARENT_PATH}/charts/"${CHART_FOLDER}"/values.yaml)
 SECRETS=${SECRETS//alias: /}
 SECRETS=${SECRETS//name: /}
 SECRETS_AS_ARRAY=("${x//\n/}")
@@ -88,7 +89,7 @@ echo "# ----------------------- "
 echo "# Populating environment variables from chart to env file from ${KEY_VAULT} on ""$(date)"
 
 # Get environment var list from chart, and save to file. Loop through as we need to exclude substitutions
-ENVIRONMENT_LIST=$(yq eval ".java.environment" ${PARENT_PATH}/charts/"${SERVICE_NAME}"/values.yaml)
+ENVIRONMENT_LIST=$(yq eval ".java.environment" ${PARENT_PATH}/charts/"${CHART_FOLDER}"/values.yaml)
 ENVIRONMENT_LIST=$(echo "${ENVIRONMENT_LIST}" | tr -d '"' )
 ENVIRONMENT_LIST=$(echo "${ENVIRONMENT_LIST}" | tr -d '{{')
 ENVIRONMENT_LIST=$(echo "${ENVIRONMENT_LIST}" | tr -d '}}')

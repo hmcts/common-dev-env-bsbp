@@ -15,6 +15,7 @@
         "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *"
       },
       "keyVault": "bulk-scan",
+      "chartLocation": "bulk-scan-orchestrator",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     },
     {
@@ -23,6 +24,7 @@
       "type": "java",
       "envVarSubstitutions": {},
       "keyVault": "bulk-scan",
+      "chartLocation": "bulk-scan-payment-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     },
     {
@@ -39,6 +41,24 @@
         "FLYWAY_SKIP_MIGRATIONS": false
       },
       "keyVault": "bulk-scan",
+      "chartLocation": "bulk-scan-processor",
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+    },
+    {
+      "name": "send-letter-service",
+      "gitUrl": "git@github.com:hmcts/send-letter-service.git",
+      "type": "java",
+      "envVarSubstitutions": {
+        "DB_PASSWORD": "letterservice",
+        "DB_USER": "letterservice",
+        "DB_HOST": "localhost",
+        "DB_PORT": 5440,
+        "DB_NAME": "letterservice",
+        "DB_CONN_OPTIONS": "",
+        "FLYWAY_SKIP_MIGRATIONS": false
+      },
+      "keyVault": "rpe-send-letter",
+      "chartLocation": "rpe-send-letter-service",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     }
   ]

@@ -14,6 +14,7 @@ def orchestrate_service_setup(service, dir :str, db_only_for_service: bool, prom
     service_key_vault = service['keyVault'] if 'keyVault' in service else ''
     scripts_required = service['scriptsRequired'] if 'scriptsRequired' in service else []
     file_path_of_service = '%s/dev_env/apps/%s' % (dir, service_name)
+    chart_location = service['chartLocation']
 
     create_repo_if_required(service_name, file_path_of_service, service['gitUrl'])
     copy_script_files(dir, service_name, scripts_required) \
@@ -29,4 +30,5 @@ def orchestrate_service_setup(service, dir :str, db_only_for_service: bool, prom
         service_key_vault, 
         service_type, 
         db_only_for_service, 
-        prompt_to_create_env)
+        prompt_to_create_env, 
+        chart_location)
