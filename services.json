@@ -1,6 +1,44 @@
 {
   "services": [
     {
+      "name": "blob-router-service",
+      "gitUrl": "git@github.com:hmcts/blob-router-service.git",
+      "type": "java",
+      "envVarSubstitutions": {
+        "STORAGE_ACCOUNT_NAME": "reformscanlocal",
+        "STORAGE_ACCOUNT_KEY": "cmVmb3Jtc2NhbmtleQo=",
+        "STORAGE_ACCOUNT_SECONDARY_KEY": "",
+        "STORAGE_CRIME_CONNECTION_STRING": "DefaultEndpointsProtocol=http;AccountName=crime;AccountKey=Y3JpbWVrZXkK;BlobEndpoint=http://localhost:10000/crime;QueueEndpoint=http://localhost:10001/crime;",
+        "STORAGE_URL": "http://localhost:10000/reformscanlocal",
+        "STORAGE_BULKSCAN_URL": "http://localhost:10000/bulkscanlocal",
+        "STORAGE_PCQ_URL": "http://localhost:10000/pcqlocal",
+        "DB_PASSWORD": "blob_router",
+        "DB_USER": "blob_router",
+        "DB_HOST": "localhost",
+        "DB_PORT": 5434,
+        "DB_NAME": "blob_router",
+        "DB_CONN_OPTIONS": "",
+        "FLYWAY_SKIP_MIGRATIONS": false,
+        "SMTP_HOST": false,
+        "PCQ_ENABLED": true,
+        "DELETE_DISPATCHED_FILES_CRON": "0 0/10 * * * *",
+        "HANDLE_REJECTED_FILES_CRON": "0/30 * * * * *",
+        "REJECT_DUPLICATES_CRON": "0/30 * * * * *",
+        "CHECK_NEW_ENVELOPES_CRON": "0 0 * * * *",
+        "TASK_SCAN_DELAY": 4000,
+        "SEND_DAILY_REPORT_CRON": "0 0 6 ? * *",
+        "SEND_NOTIFICATIONS_CRON": "0 0/10 * * * *",
+        "CREATE_RECONCILIATION_SUMMARY_REPORT_CRON": "0 0 2-6 * * *",
+        "CREATE_RECONCILIATION_SUMMARY_REPORT_ENABLED": false,
+        "CREATE_RECONCILIATION_DETAILED_REPORT_CRON": "0 30 3-6 * * *",
+        "CREATE_RECONCILIATION_DETAILED_REPORT_ENABLED": false,
+        "SEND_RECONCILIATION_REPORT_MAIL_CRON": "0 0 7 * * *"
+      },
+      "keyVault": "reform-scan",
+      "chartLocation": "reform-scan-blob-router",
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+    },
+    {
       "name": "bulk-scan-orchestrator",
       "gitUrl": "git@github.com:hmcts/bulk-scan-orchestrator.git",
       "type": "java",
@@ -43,6 +81,15 @@
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+    },
+    {
+      "name": "send-letter-client",
+      "gitUrl": "git@github.com:hmcts/send-letter-client.git",
+      "type": "java",
+      "envVarSubstitutions": {},
+      "keyVault": "",
+      "chartLocation": "",
+      "scriptsRequired": []
     },
     {
       "name": "send-letter-service",

@@ -5,16 +5,11 @@ import os
 
 def create_repo_if_required(service_name: str, file_path: str, git_url: str):
     if does_path_exist(file_path):
-        logger.info('Skipping git clone as %s folder already exists' % (file_path)) 
-
-        # TODO: check if a git pull is required and prompt if so. How far behind and such 
+        logger.info('Skipping git clone and pulling instead as %s folder already exists' % (file_path)) 
+        call_command('git -C %s pull' % (file_path))
     else: 
         logger.info('Cloning %s to %s' % (service_name, file_path)) 
         call_command('git clone %s %s' % (git_url, file_path))
-
-def get_github_branch():
-    # TODO: check this and add github check to do pull and prompt for command if so
-    pass
 
 def copy_script_files(dir_path: str, service_name: str, scripts_required: list):
     file_from_path = '%s/dev_env/setup_files/scripts/' % (dir_path)
