@@ -33,9 +33,9 @@ then
         sed -i '' 's/localhost/host.docker.internal/' ${PARENT_PATH}/.env
         if [ "${SERVICE_TYPE}" == "java" ] 
         then
-            echo "Building java service through gradlew to ensure we have a build folder with a jar for: ${SERVICE_NAME}"
+            echo "Assembling java service through gradlew to ensure we have a build folder with a jar for: ${SERVICE_NAME}"
             cd ${PARENT_PATH}
-            ./gradlew build
+            ./gradlew assemble
             cd ${MY_PATH}
         fi
         docker-compose -f ${PARENT_PATH}/docker-compose.yml down -v

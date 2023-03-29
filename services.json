@@ -107,6 +107,23 @@
       "keyVault": "rpe-send-letter",
       "chartLocation": "rpe-send-letter-service",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+    },
+    {
+      "name": "reform-scan-notification-service",
+      "gitUrl": "git@github.com:hmcts/reform-scan-notification-service.git",
+      "type": "java",
+      "envVarSubstitutions": {
+        "DB_PASSWORD": "notification_service",
+        "DB_USER": "notification_service",
+        "DB_HOST": "localhost",
+        "DB_PORT": 5437,
+        "DB_NAME": "notification_service",
+        "DB_CONN_OPTIONS": "",
+        "FLYWAY_SKIP_MIGRATIONS": false
+      },
+      "keyVault": "reform-scan",
+      "chartLocation": "reform-scan-notification-service",
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
     }
   ]
 }
