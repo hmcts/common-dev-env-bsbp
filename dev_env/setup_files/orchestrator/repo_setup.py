@@ -1,3 +1,4 @@
+import logging
 from dev_env.setup_files.utils.utils import does_file_exist, does_path_exist, call_command, copy_file_from_to, run_command
 from dev_env.setup_files.logging.logger import logger
 import json
@@ -10,6 +11,9 @@ def create_repo_if_required(service_name: str, file_path: str, git_url: str):
     else: 
         logger.info('Cloning %s to %s' % (service_name, file_path)) 
         call_command('git clone %s %s' % (git_url, file_path))
+        if not does_path_exist(file_path): 
+            logging.info('Error whilst cloning. Please review and also make sure you have your SSH key set up on GitHub')
+            quit()
 
 def copy_script_files(dir_path: str, service_name: str, scripts_required: list):
     file_from_path = '%s/dev_env/setup_files/scripts/' % (dir_path)
