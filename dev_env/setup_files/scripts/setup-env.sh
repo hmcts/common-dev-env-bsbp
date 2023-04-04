@@ -35,7 +35,9 @@ then
         then
             echo "Assembling java service through gradlew to ensure we have a build folder with a jar for: ${SERVICE_NAME}"
             cd ${PARENT_PATH}
-            ./gradlew assemble
+            sudo rm -rf .gradle
+            sudo ./gradlew assemble
+            sudo rm -rf .gradle
             cd ${MY_PATH}
         fi
         docker-compose -f ${PARENT_PATH}/docker-compose.yml down -v
