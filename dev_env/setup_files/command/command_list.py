@@ -2,22 +2,33 @@ from dev_env.setup_files.command.args_parser import get_parser
 from dev_env.setup_files.utils.utils import query_yes_no, run_command
 from dev_env.setup_files.utils.prompts import run_db_only
 from dev_env.setup_files.logging.logger import logger
-from dev_env.setup_files.service import setup_one_service, setup_all_services, stop_all_services, stop_one_service, get_docker_log_service
+from dev_env.setup_files.service import start_activemq, stop_activemq, setup_one_service, setup_all_services, stop_all_services, stop_one_service, get_docker_log_service
 
 def determine_action_based_on_command(file_path: str):
 
     command = vars(get_parser().parse_args())['command']
 
     if len(command) == 0 and query_yes_no('Do you want to clone and install all services?'):
+        stop_activemq(file_path)
         setup_all_services('y', file_path) if run_db_only() else setup_all_services('n', file_path)
+        start_activemq(file_path)
+
+    elif len(command) == 2 and 'start' in command and 'activemq':
+        start_activemq(file_path)
+
+    elif len(command) == 2 and 'stop' in command and 'activemq':
+        stop_activemq(file_path)
 
     elif len(command) == 3 and 'start' in command and 'service' in command and 'all' in command:
+        stop_activemq(file_path)
         setup_all_services('y', file_path) if run_db_only() else setup_all_services('n', file_path)
+        start_activemq(file_path)
 
     elif len(command) == 3 and 'start' in command and 'service':
         setup_one_service('y', command[2], file_path) if run_db_only() else setup_one_service('n', command[2], file_path)
 
     elif len(command) == 3 and 'stop' in command and 'service' in command and 'all' in command:
+        stop_activemq(file_path)
         stop_all_services(file_path)
 
     elif len(command) == 3 and 'stop' in command and 'service':

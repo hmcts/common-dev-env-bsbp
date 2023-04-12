@@ -37,10 +37,12 @@ Where `:command` is one of the following:
 
 1. (no args) (default, prompt to start all services)
 2. start service all (start all services) 
-3. start service :service (start specific service - i.e bulk-scan-orchestrator)
-4. stop service all (stop all services)
-5. stop service :name (stop one service)
-6. get docker logs :service (get docker logs for one service)
+3. start activemq (add an activemq instance with all for BSBP (done by default on start service all))
+4. start service :service (start specific service - i.e bulk-scan-orchestrator)
+5. stop service all (stop all services)
+6. stop service :name (stop one service)
+7. stop activemq (stop docker activemq instance)
+8. get docker logs :service (get docker logs for one service)
 
 ## Contacts
 

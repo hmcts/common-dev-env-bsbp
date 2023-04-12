@@ -30,5 +30,12 @@ def stop_all_services(file_path: str):
 def stop_one_service(file_path: str, service_name: str):
     run_command('docker compose -f %s/dev_env/apps/%s/docker-compose.yml down -v' % (file_path, service_name))
 
+def start_activemq(file_path: str):
+    run_command('docker compose -f %s/dev_env/setup_files/activemq/docker-compose.yml build' % (file_path))
+    run_command('docker compose -f %s/dev_env/setup_files/activemq/docker-compose.yml up -d' % (file_path))
+
+def stop_activemq(file_path: str):
+    run_command('docker compose -f %s/dev_env/setup_files/activemq/docker-compose.yml down -v' % (file_path))
+
 def get_docker_log_service(file_path: str, service_name: str):
     run_command('docker compose -f %s/dev_env/apps/%s/docker-compose.yml logs' % (file_path, service_name))
