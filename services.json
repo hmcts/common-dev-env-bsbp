@@ -60,7 +60,7 @@
       "name": "bulk-scan-payment-processor",
       "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
-      "envVarSubstitutions": {},
+      "envVarSubstitutions": {"JMS_ENABLED": "true", "SPRING_PROFILES_ACTIVE": "dev"},
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-payment-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
