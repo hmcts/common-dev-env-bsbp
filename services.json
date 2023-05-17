@@ -32,7 +32,9 @@
         "CREATE_RECONCILIATION_SUMMARY_REPORT_ENABLED": false,
         "CREATE_RECONCILIATION_DETAILED_REPORT_CRON": "0 30 3-6 * * *",
         "CREATE_RECONCILIATION_DETAILED_REPORT_ENABLED": false,
-        "SEND_RECONCILIATION_REPORT_MAIL_CRON": "0 0 7 * * *"
+        "SEND_RECONCILIATION_REPORT_MAIL_CRON": "0 0 7 * * *",
+        "JMS_ENABLED": "true", 
+        "SPRING_PROFILES_ACTIVE": "dev"
       },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-blob-router",
@@ -50,7 +52,9 @@
         "DB_NAME": "bulk_scan_orchestrator",
         "DB_CONN_OPTIONS": "",
         "FLYWAY_SKIP_MIGRATIONS": false,
-        "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *"
+        "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *",
+        "JMS_ENABLED": "true", 
+        "SPRING_PROFILES_ACTIVE": "dev"
       },
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-orchestrator",
@@ -76,7 +80,9 @@
         "DB_PORT": 5435,
         "DB_NAME": "bulk_scan_processor",
         "DB_CONN_OPTIONS": "",
-        "FLYWAY_SKIP_MIGRATIONS": false
+        "FLYWAY_SKIP_MIGRATIONS": false,
+        "JMS_ENABLED": "true", 
+        "SPRING_PROFILES_ACTIVE": "dev"
       },
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-processor",
@@ -119,7 +125,9 @@
         "DB_PORT": 5437,
         "DB_NAME": "notification_service",
         "DB_CONN_OPTIONS": "",
-        "FLYWAY_SKIP_MIGRATIONS": false
+        "FLYWAY_SKIP_MIGRATIONS": false,
+        "JMS_ENABLED": "true", 
+        "SPRING_PROFILES_ACTIVE": "dev"
       },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-notification-service",
