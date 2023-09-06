@@ -2,3 +2,4 @@ __pycache__
 .idea
 .DS_Store
 dev_env/apps/**
+dev_env/debug/**
