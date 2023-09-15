@@ -27,12 +27,16 @@ def run_bsp_bau_tasks():
     """
     # Prompt the user for the Authorization token and set headers
     headers = {"Authorization": input("Enter your Authorization token (Bearer token): ")}
+    actions = []
 
+    handle_stale_letters(headers, actions)
+    reprocess_stale_envelopes(headers, actions)
+    logger.info(f"Actions to look into are: {actions}")
 
-    handle_stale_letters(headers)
-    # reprocess_stale_envelopes()
+def check_services_health():
+    pass
 
-def handle_stale_letters(headers: dict):
+def handle_stale_letters(headers: dict, actions: list):
     # Fetch the JSON data from the URL
     url = "http://rpe-send-letter-service-prod.service.core-compute-prod.internal/stale-letters"
     
@@ -65,9 +69,10 @@ def handle_stale_letters(headers: dict):
         if response.status_code == 200:
             print(f"Letter with ID {letter_id} marked successfully: {action}.")
         else:
+            actions.append(f"Stale letter: {letter_id}, {created_at_str}")
             print(f"Failed to mark letter with ID {letter_id}. Status code: {response.status_code}")
 
-def reprocess_stale_envelopes():
+def reprocess_stale_envelopes(headers: dict, actions: list):
     # Define the base URL of the GET endpoint to retrieve initial data
     initial_data_url = "http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/stale-incomplete-envelopes"
 
@@ -77,64 +82,57 @@ def reprocess_stale_envelopes():
     # Make a GET request to fetch the initial data
     response = fetch_data_with_retries(initial_data_url)
 
-    # Check if the GET request was successful (HTTP status code 200)
-    if response.status_code == 200:
-        json_data = response.json()
-        # Extract envelope data
-        envelope_data = json_data["data"]
+    # Extract envelope data
+    envelope_data = response["data"]
 
-        # Prompt the user for the Authorization token and set headers
-        headers = {"Authorization": input("Enter your Authorization token (Bearer token): ")}
+    # Iterate over each envelope data
+    for entry in envelope_data:
+        envelope_id = entry["envelope_id"]
+        container = entry["container"]
+        file_name = entry["file_name"]
+        
+        # Construct the URL for the specific envelope ID
+        url = base_url + envelope_id
 
-        # Iterate over each envelope data
-        for entry in envelope_data:
-            envelope_id = entry["envelope_id"]
-            container = entry["container"]
-            file_name = entry["file_name"]
+        # Make the PUT request with the Authorization header
+        put_response = requests.put(url, json={}, headers=headers)
+
+        # New URL for checking for CCD_ID or if we have an error
+        new_url = f"http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/{container}/{file_name}"
+        
+        # Check if the PUT request was successful (HTTP status code 200)
+        if put_response.status_code == 200:
+            logger.info(f"PUT request successful for envelope ID: {envelope_id}")
             
-            # Construct the URL for the specific envelope ID
-            url = base_url + envelope_id
+            # Initialize a timer
+            start_time = time.time()
+            timeout = 20  # 20 seconds timeout
 
-            # Make the PUT request with the Authorization header
-            put_response = requests.put(url, json={}, headers=headers)
+            while True:
+                # Make a GET request to the new URL
+                response = requests.get(new_url)
 
-            # Check if the PUT request was successful (HTTP status code 200)
-            if put_response.status_code == 200:
-                logger.info(f"PUT request successful for envelope ID: {envelope_id}")
-                
-                # Construct the new URL
-                new_url = f"http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/{container}/{file_name}"
-                logger.info(new_url)
+                # Check if the GET request was successful (HTTP status code 200)
+                if response.status_code == 200:
+                    response_data = response.json()
+                    ccd_id = response_data.get("ccd_id")
+                    if ccd_id is not None:
+                        logger.info(f"ccd_id is populated: {ccd_id}")
+                        break  # Exit the loop if ccd_id is populated
 
-                # Initialize a timer
-                start_time = time.time()
-                timeout = 20  # 20 seconds timeout
+                # Check if the timeout has been reached
+                if time.time() - start_time > timeout:
+                    actions.append(f"Check CCD_ID is populaed: {new_url}")
+                    logger.info("Timeout reached. ccd_id is not populated.")
+                    break
+                time.sleep(1)  # Wait for 1 second before checking again
+        else:
+            actions.append(f"Check envelope: {new_url}")
+            logger.error(f"PUT request failed for envelope ID: {envelope_id} "
+                            f"with zip file: {file_name} and container: {container}")
+            logger.error(f"Response status code: {put_response.status_code}")
+            logger.error(f"Response content: {put_response.text}")
 
-                while True:
-                    # Make a GET request to the new URL
-                    response = requests.get(new_url)
-
-                    # Check if the GET request was successful (HTTP status code 200)
-                    if response.status_code == 200:
-                        response_data = response.json()
-                        ccd_id = response_data.get("ccd_id")
-                        if ccd_id is not None:
-                            logger.info(f"ccd_id is populated: {ccd_id}")
-                            break  # Exit the loop if ccd_id is populated
-
-                    # Check if the timeout has been reached
-                    if time.time() - start_time > timeout:
-                        logger.info("Timeout reached. ccd_id is not populated.")
-                        break
-                    time.sleep(1)  # Wait for 1 second before checking again
-            else:
-                logger.error(f"PUT request failed for envelope ID: {envelope_id} "
-                             f"with zip file: {file_name} and container: {container}")
-                logger.error(f"Response status code: {put_response.status_code}")
-                logger.error(f"Response content: {put_response.text}")
-    else:
-        logger.error(f"GET request failed with status code: {response.status_code}")
-        logger.error(f"Response content: {response.text}")
 
 # Function to fetch data with retries
 def fetch_data_with_retries(url, max_retries=3):
