@@ -5,24 +5,19 @@ from dev_env.setup_files.logging.logger import logger
 
 def run_bsp_bau_tasks():
     """ 
-    1) Monitor health endpoints: call each microservices /health endpoint 
-    and append to actions list if any are marked as DOWN. 
-
-    Example of data to work with:
-
-    2) Warn if expiration dates for certificates are upcoming (within a month), 
+    1) Warn if expiration dates for certificates are upcoming (within a month), 
     or show an error if they have been exceeded. Add an action in both cases to 
     the actions list to print out at the end of the script
 
     Example to work with: input file json, where dates need to be changed manually for now
 
-    3) Check stale envelopes in blob router - this should always be empty. In the case it isn't, 
+    2) Check stale envelopes in blob router - this should always be empty. In the case it isn't, 
     add an action to the list
 
-    4) Stale envelopes in processor - should be empty, if not then do a PUT request to make 
+    3) Stale envelopes in processor - should be empty, if not then do a PUT request to make 
     the envelope reprocess itself as an exception record so that a caseworker can investigate further
 
-    5) Stale letters in bulk print - depending on the state, call abort or complete
+    4) Stale letters in bulk print - depending on the state, call abort or complete
     
     """
     # Prompt the user for the Authorization token and set headers
@@ -77,7 +72,7 @@ def reprocess_stale_envelopes(headers: dict, actions: list):
     initial_data_url = "http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/stale-incomplete-envelopes"
 
     # Define the base URL of the PUT endpoint
-    base_url = "http://bulk-scan-processor-prod.service.core-compute-prod.internal/actions/reprocess/"
+    base_url = "http://bulk-scan-processor-prod.service.core-compute-prod.internal/actions/"
 
     # Make a GET request to fetch the initial data
     response = fetch_data_with_retries(initial_data_url)
@@ -87,21 +82,26 @@ def reprocess_stale_envelopes(headers: dict, actions: list):
 
     # Iterate over each envelope data
     for entry in envelope_data:
+        print(entry)
         envelope_id = entry["envelope_id"]
         container = entry["container"]
         file_name = entry["file_name"]
         
         # Construct the URL for the specific envelope ID
         url = base_url + envelope_id
+        new_url = f"http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/{container}/{file_name}"
+        notification_sent_status = requests.get(new_url).json()["status"]
+
+        url = base_url + envelope_id + "/abort" if notification_sent_status else \
+            base_url + "reprocess/" + envelope_id
+        
+        logger.info("Attempting to " + "abort..." if notification_sent_status else "reprocess...")
 
         # Make the PUT request with the Authorization header
         put_response = requests.put(url, json={}, headers=headers)
 
-        # New URL for checking for CCD_ID or if we have an error
-        new_url = f"http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/{container}/{file_name}"
-        
-        # Check if the PUT request was successful (HTTP status code 200)
-        if put_response.status_code == 200:
+        # Check if the PUT request was successful (HTTP status code 200) and confirm CCD_ID populated if reprocess called
+        if put_response.status_code == 200 and not notification_sent_status:
             logger.info(f"PUT request successful for envelope ID: {envelope_id}")
             
             # Initialize a timer
@@ -122,7 +122,7 @@ def reprocess_stale_envelopes(headers: dict, actions: list):
 
                 # Check if the timeout has been reached
                 if time.time() - start_time > timeout:
-                    actions.append(f"Check CCD_ID is populaed: {new_url}")
+                    actions.append(f"Check CCD_ID is populated: {new_url}")
                     logger.info("Timeout reached. ccd_id is not populated.")
                     break
                 time.sleep(1)  # Wait for 1 second before checking again
