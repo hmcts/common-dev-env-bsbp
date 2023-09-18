@@ -14,8 +14,8 @@ def determine_action_based_on_command(file_path: str):
         setup_all_services('y', file_path) if run_db_only() else setup_all_services('n', file_path)
         start_activemq(file_path)
 
-    elif len(command) == 2 and 'run' in command and 'dailychecks':
-        run_bsp_bau_tasks()
+    elif len(command) == 3 and 'run' in command and 'dailychecks':
+        run_bsp_bau_tasks(command[2])
 
     elif len(command) == 2 and 'start' in command and 'activemq':
         start_activemq(file_path)

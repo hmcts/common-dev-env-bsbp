@@ -3,8 +3,10 @@ import time
 from datetime import datetime, timedelta, timezone
 from dev_env.setup_files.logging.logger import logger
 
-def run_bsp_bau_tasks():
+def run_bsp_bau_tasks(env: str):
     """ 
+    Usage: python3 start.py run dailychecks <env>
+
     1) Warn if expiration dates for certificates are upcoming (within a month), 
     or show an error if they have been exceeded. Add an action in both cases to 
     the actions list to print out at the end of the script
@@ -23,17 +25,26 @@ def run_bsp_bau_tasks():
     # Prompt the user for the Authorization token and set headers
     headers = {"Authorization": input("Enter your Authorization token (Bearer token): ")}
     actions = []
+ 
+    check_services_health(actions, env)
+    handle_stale_letters(headers, actions, env)
+    reprocess_stale_envelopes(headers, actions, env)
+    if len(actions) > 0:
+        logger.info(f"Actions to look into are: {actions}" if len(actions) > 0 else "No actions; all looks good!")
 
-    handle_stale_letters(headers, actions)
-    reprocess_stale_envelopes(headers, actions)
-    logger.info(f"Actions to look into are: {actions}")
+def check_services_health(actions: list, env: str):
+    urls_to_check = [f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/health", 
+                     f"http://bulk-scan-orchestrator-{env}.service.core-compute-{env}.internal/health", 
+                     f"http://bulk-scan-payment-processor-{env}.service.core-compute-{env}.internal/health"]
 
-def check_services_health():
-    pass
+    for service_url in urls_to_check:
+        health_response = fetch_data_with_retries(service_url)["status"]
+        if not health_response == "UP":
+            actions.append(f"Check service (showing as {health_response}): {service_url}")
 
-def handle_stale_letters(headers: dict, actions: list):
+def handle_stale_letters(headers: dict, actions: list, env:str):
     # Fetch the JSON data from the URL
-    url = "http://rpe-send-letter-service-prod.service.core-compute-prod.internal/stale-letters"
+    url = f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/stale-letters"
     
     # Fetching the data for bulk print sometimes gives a 502 for some reason, so retry a few times
     response = fetch_data_with_retries(url)
@@ -52,11 +63,11 @@ def handle_stale_letters(headers: dict, actions: list):
         if created_at < one_week_ago or letter['status'] == 'Uploaded':
             # If created_at is more than a week old, or it has already been uploaded then mark as aborted
             action = "mark-aborted"
-            mark_url = f"http://rpe-send-letter-service-prod.service.core-compute-prod.internal/letters/{letter_id}/mark-aborted"
+            mark_url = f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/letters/{letter_id}/mark-aborted"
         else:
             # If created_at is less than a week old and the status is not Uploaded, mark as created
             action = "mark-created"
-            mark_url = f"http://rpe-send-letter-service-prod.service.core-compute-prod.internal/letters/{letter_id}/mark-created"
+            mark_url = f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/letters/{letter_id}/mark-created"
 
         # Make the HTTP request to mark the letter
         response = requests.put(mark_url, data={}, headers=headers)
@@ -67,12 +78,12 @@ def handle_stale_letters(headers: dict, actions: list):
             actions.append(f"Stale letter: {letter_id}, {created_at_str}")
             print(f"Failed to mark letter with ID {letter_id}. Status code: {response.status_code}")
 
-def reprocess_stale_envelopes(headers: dict, actions: list):
+def reprocess_stale_envelopes(headers: dict, actions: list, env: str):
     # Define the base URL of the GET endpoint to retrieve initial data
-    initial_data_url = "http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/stale-incomplete-envelopes"
+    initial_data_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/stale-incomplete-envelopes"
 
     # Define the base URL of the PUT endpoint
-    base_url = "http://bulk-scan-processor-prod.service.core-compute-prod.internal/actions/"
+    base_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/actions/"
 
     # Make a GET request to fetch the initial data
     response = fetch_data_with_retries(initial_data_url)
@@ -89,8 +100,8 @@ def reprocess_stale_envelopes(headers: dict, actions: list):
         
         # Construct the URL for the specific envelope ID
         url = base_url + envelope_id
-        new_url = f"http://bulk-scan-processor-prod.service.core-compute-prod.internal/envelopes/{container}/{file_name}"
-        notification_sent_status = requests.get(new_url).json()["status"]
+        new_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/{container}/{file_name}"
+        notification_sent_status = fetch_data_with_retries(new_url)["status"]
 
         url = base_url + envelope_id + "/abort" if notification_sent_status else \
             base_url + "reprocess/" + envelope_id
