@@ -7,11 +7,7 @@ def run_bsp_bau_tasks(env: str):
     """ 
     Usage: python3 start.py run dailychecks <env>
 
-    1) Warn if expiration dates for certificates are upcoming (within a month), 
-    or show an error if they have been exceeded. Add an action in both cases to 
-    the actions list to print out at the end of the script
-
-    Example to work with: input file json, where dates need to be changed manually for now
+    1) Check health for services
 
     2) Check stale envelopes in blob router - this should always be empty. In the case it isn't, 
     add an action to the list
@@ -25,12 +21,18 @@ def run_bsp_bau_tasks(env: str):
     # Prompt the user for the Authorization token and set headers
     headers = {"Authorization": input("Enter your Authorization token (Bearer token): ")}
     actions = []
- 
     check_services_health(actions, env)
+    check_stale_blobs(actions, env)
     handle_stale_letters(headers, actions, env)
     reprocess_stale_envelopes(headers, actions, env)
     if len(actions) > 0:
         logger.info(f"Actions to look into are: {actions}" if len(actions) > 0 else "No actions; all looks good!")
+
+def check_stale_blobs(actions: list, env: str):
+    stale_blob_url = f"http://reform-scan-blob-router-{env}.service.core-compute-{env}.internal/stale-blobs?stale_time=20"
+    envelopes = fetch_data_with_retries(stale_blob_url)
+    if envelopes["count"] > 0:
+        actions.append(f"Investigate stale blobs: {stale_blob_url}")
 
 def check_services_health(actions: list, env: str):
     urls_to_check = [f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/health", 
