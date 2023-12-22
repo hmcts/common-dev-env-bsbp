@@ -43,6 +43,7 @@ Where `:command` is one of the following:
 6. stop service :name (stop one service)
 7. stop activemq (stop docker activemq instance)
 8. get docker logs :service (get docker logs for one service)
+9. run dailychecks <env> (requires bearer token)
 
 ## Contacts
 
