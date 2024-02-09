@@ -27,7 +27,7 @@ def run_bsp_bau_tasks(env: str):
     handle_stale_letters(headers, actions, env)
     reprocess_stale_envelopes(headers, actions, env)
     handle_unprocessable_stale_blobs(headers, actions, env)
-    # handle_unprocessable_stale_envelopes(headers, actions, env)
+    handle_unprocessable_stale_envelopes(headers, actions, env)
     if len(actions) > 0:
         logger.info(f"Actions to look into are: {actions}" if len(actions) > 0 else "No actions; all looks good!")
 
