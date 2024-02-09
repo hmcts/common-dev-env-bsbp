@@ -23,7 +23,6 @@ def run_bsp_bau_tasks(env: str):
     headers = {"Authorization": input("Enter your Authorization token (Bearer token): ")}
     actions = []
     check_services_health(actions, env)
-    check_stale_blobs(actions, env)
     handle_stale_letters(headers, actions, env)
     reprocess_stale_envelopes(headers, actions, env)
     handle_unprocessable_stale_blobs(headers, actions, env)
@@ -82,13 +81,6 @@ def handle_unprocessable_stale_envelopes(headers: dict, actions: list, env: str)
                     response.raise_for_status()
         except requests.exceptions.RequestException as e:
             print(e)
-
-
-def check_stale_blobs(actions: list, env: str):
-    stale_blob_url = f"http://reform-scan-blob-router-{env}.service.core-compute-{env}.internal/stale-blobs?stale_time=20"
-    envelopes = fetch_data_with_retries(stale_blob_url)
-    if envelopes["count"] > 0:
-        actions.append(f"Investigate stale blobs: {stale_blob_url}")
 
 
 def check_services_health(actions: list, env: str):
