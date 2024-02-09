@@ -10,13 +10,14 @@ def run_bsp_bau_tasks(env: str):
 
     1) Check health for services
 
-    2) Check stale envelopes in blob router - this should always be empty. In the case it isn't,
-    add an action to the list
-
-    3) Stale envelopes in processor - should be empty, if not then do a PUT request to make
+    2) Stale envelopes in processor - should be empty, if not then do a PUT request to make
     the envelope reprocess itself as an exception record so that a caseworker can investigate further
 
-    4) Stale letters in bulk print - depending on the state, call abort or complete
+    3) Stale letters in bulk print - depending on the state, call abort or complete
+
+    4) Remove all stale blobs - calls /all endpoint to invoke logic and removes if older than a week
+
+    5) Remove all stale envelopes - calls /{id} endpoint and removes each in turn as long as no payment DCNs found
 
     """
     # Prompt the user for the Authorization token and set headers
