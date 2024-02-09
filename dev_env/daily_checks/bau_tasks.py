@@ -26,12 +26,32 @@ def run_bsp_bau_tasks(env: str):
     check_stale_blobs(actions, env)
     handle_stale_letters(headers, actions, env)
     reprocess_stale_envelopes(headers, actions, env)
-    handle_unprocessable_stale_envelopes(headers, actions, env)
+    handle_unprocessable_stale_blobs(headers, actions, env)
+    # handle_unprocessable_stale_envelopes(headers, actions, env)
     if len(actions) > 0:
         logger.info(f"Actions to look into are: {actions}" if len(actions) > 0 else "No actions; all looks good!")
 
 
-def handle_unprocessable_stale_envelopes(headers: dict, actions: list, env:str):
+def handle_unprocessable_stale_blobs(headers: dict, actions: list, env: str):
+    # Call the endpoint to remove all stale blobs
+    base_url = f"http://reform-scan-blob-router-{env}.service.core-compute-{env}.internal/envelopes/stale/all"
+
+    try:
+        response = requests.delete(base_url, json={}, headers=headers)
+        if response.status_code == 200:
+            # Process the response
+            logger.info(f'All stale-blob removal call success: {response.text}')
+        else:
+            if response.status_code == 500:
+                logger.info(f'Stale-blobs have NOT been removed: {response.text}')
+                actions.append(f'Errors found when removing stale-blobs: {response.text}')
+            else:
+                response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(e)
+
+
+def handle_unprocessable_stale_envelopes(headers: dict, actions: list, env: str):
     # Define the base URL of the GET endpoint to retrieve initial data
     initial_data_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/stale-incomplete-envelopes"
 
