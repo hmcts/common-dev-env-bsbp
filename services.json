@@ -19,6 +19,7 @@
         "DB_NAME": "blob_router",
         "DB_CONN_OPTIONS": "",
         "FLYWAY_SKIP_MIGRATIONS": false,
+        "FLYWAY_NOOP_STRATEGY": false,
         "SMTP_HOST": false,
         "PCQ_ENABLED": true,
         "DELETE_DISPATCHED_FILES_CRON": "0 0/10 * * * *",
@@ -52,6 +53,7 @@
         "DB_NAME": "bulk_scan_orchestrator",
         "DB_CONN_OPTIONS": "",
         "FLYWAY_SKIP_MIGRATIONS": false,
+        "FLYWAY_NOOP_STRATEGY": false,
         "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *",
         "JMS_ENABLED": "true",
         "SPRING_PROFILES_ACTIVE": "dev"
@@ -126,9 +128,12 @@
         "LETTER_TRACKING_DB_NAME": "letterservice",
         "LETTER_TRACKING_DB_CONN_OPTIONS": "",
         "FLYWAY_SKIP_MIGRATIONS": false,
+        "FLYWAY_NOOP_STRATEGY": false,
         "ENCRYPTION_ENABLED": false,
         "FTP_REPORTS_CRON": "0 30 * * * *",
-        "SCHEDULING_ENABLED": false
+        "SCHEDULING_ENABLED": false,
+        "FLYWAY_URL": "jdbc:postgresql://localhost:5435/send_letter",
+        "APP_INSIGHTS_CONNECTION_STRING": ""
       },
       "keyVault": "rpe-send-letter",
       "chartLocation": "rpe-send-letter-service",
@@ -146,6 +151,7 @@
         "DB_NAME": "notification_service",
         "DB_CONN_OPTIONS": "",
         "FLYWAY_SKIP_MIGRATIONS": false,
+        "FLYWAY_NOOP_STRATEGY": false,
         "JMS_ENABLED": "true",
         "SPRING_PROFILES_ACTIVE": "dev"
       },
