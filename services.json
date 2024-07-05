@@ -95,7 +95,7 @@
         "LETTER_TRACKING_DB_HOST": "localhost",
         "APP_INSIGHTS_CONNECTION_STRING": "",
         "STORAGE_ACCOUNT_NAME": "bulkscanlocal",
-        "STORAGE_ACCOUNT_KEY": "cmVmb3Jtc2NhbmtleQo=",
+        "STORAGE_KEY": "cmVmb3Jtc2NhbmtleQo=",
         "FLYWAY_PASSWORD": "bulk_scan_processor",
         "STORAGE_URL": "http://localhost:10000/bulkscanlocal",
         "DELETE_REJECTED_FILES_CRON": "0 0/10 * * * *",
