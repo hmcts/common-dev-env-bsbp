@@ -5,6 +5,7 @@ from dev_env.setup_files.logging.logger import logger
 from dev_env.setup_files.service import start_activemq, stop_activemq, setup_one_service, setup_all_services, stop_all_services, stop_one_service, get_docker_log_service
 from dev_env.daily_checks.bau_tasks import run_bsp_bau_tasks
 
+
 def determine_action_based_on_command(file_path: str):
 
     command = vars(get_parser().parse_args())['command']
@@ -29,7 +30,9 @@ def determine_action_based_on_command(file_path: str):
         start_activemq(file_path)
 
     elif len(command) == 3 and 'start' in command and 'service':
+        stop_activemq(file_path)
         setup_one_service('y', command[2], file_path) if run_db_only() else setup_one_service('n', command[2], file_path)
+        start_activemq(file_path)
 
     elif len(command) == 3 and 'stop' in command and 'service' in command and 'all' in command:
         stop_activemq(file_path)
@@ -43,6 +46,7 @@ def determine_action_based_on_command(file_path: str):
 
     else:
         quit_and_show_help()
+
 
 def quit_and_show_help():
     logger.info('Invalid command, please refer to --help below for more details')

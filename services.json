@@ -39,7 +39,7 @@
       },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-blob-router",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-azurite.sh"]
     },
     {
       "name": "bulk-scan-orchestrator",
