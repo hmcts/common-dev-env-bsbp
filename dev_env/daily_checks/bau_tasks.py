@@ -165,7 +165,8 @@ def reprocess_stale_envelopes(headers: dict, actions: list, env: str):
         # Make the PUT request with the Authorization header
         put_response = requests.put(url, json={}, headers=headers)
 
-        # Check if the PUT request was successful (HTTP status code 200) and confirm CCD_ID populated if reprocess called
+        # Check if the PUT request was successful (HTTP status code 200) and
+        # confirm CCD_ID populated if reprocess called
         if put_response.status_code == 200 and not notification_sent_status:
             logger.info(f"PUT request successful for envelope ID: {envelope_id}")
 

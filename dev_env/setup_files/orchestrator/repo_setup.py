@@ -77,18 +77,17 @@ def run_script_files(file_path: str, list_of_files: list, service_name: str, key
 def add_gitignore_lines(file_path_of_service: str, lines_to_add: list):
     for line in lines_to_add:
         run_command("echo '%s' >> %s/.gitignore" % (line, file_path_of_service))
-    logger.info('Added the following lines to the .gitignore file at %s: %s' \
+    logger.info('Added the following lines to the .gitignore file at %s: %s'
                 % (file_path_of_service, lines_to_add)) if len(lines_to_add) > 0 else \
-        logger.info('No files added to .gitignore file at %s' % (file_path_of_service))
+        logger.info('No files added to .gitignore file at %s' % file_path_of_service)
 
 
 def check_gitignore_file(file_path_of_service: str):
     final_list = ['.env', '/bin/substitutions.json'] \
-                 + ['/bin/' + s for s in next(os.walk('%s/dev_env/setup_files/scripts' \
+                 + ['/bin/' + s for s in next(os.walk('%s/dev_env/setup_files/scripts'
                                                       % (os.path.abspath(os.path.join(os.getcwd(), os.curdir)))),
                                               (None, None, []))[2]]
-    logger.info('Found the following lines in the services .gitignore file (required files are %s):' \
-                % (final_list))
+    logger.info('Found the following lines in the services .gitignore file (required files are %s):' % final_list)
     add_gitignore_lines(file_path_of_service,
                         (list(set(final_list) - set(run_command("grep -E '%s' %s/.gitignore"
                                                                 % ('|'.join(final_list), file_path_of_service))))))
