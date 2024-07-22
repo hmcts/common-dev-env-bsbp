@@ -8,7 +8,7 @@ import os
 
 def create_repo_if_required(service_name: str, file_path: str, git_url: str):
     if does_path_exist(file_path):
-        logger.info('Skipping git clone and pulling instead as %s folder already exists' % (file_path))
+        logger.info('Skipping git clone and pulling instead as %s folder already exists' % file_path)
         call_command('git -C %s pull' % file_path)
     else:
         logger.info('Cloning %s to %s' % (service_name, file_path))

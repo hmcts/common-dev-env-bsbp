@@ -29,5 +29,4 @@ def is_python_version_not_supported():
 def is_bash_version_not_supported():
     req_bash_version = 4.0
     current_bash_version = re.findall(r'(\d+(?:\.\d+))', run_command('bash --version')[0])[0]
-    print(current_bash_version)
     return req_bash_version >= float(current_bash_version)

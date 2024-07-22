@@ -53,7 +53,8 @@ def handle_unprocessable_stale_blobs(headers: dict, actions: list, env: str):
 
 def handle_unprocessable_stale_envelopes(headers: dict, actions: list, env: str):
     # Define the base URL of the GET endpoint to retrieve initial data
-    initial_data_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/stale-incomplete-envelopes"
+    initial_data_url = (f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/"
+                        f"envelopes/stale-incomplete-envelopes")
 
     # Define the base URL of the DELETE endpoint
     base_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/stale/"
@@ -95,7 +96,7 @@ def check_services_health(actions: list, env: str):
             actions.append(f"Check service (showing as {health_response}): {service_url}")
 
 
-def handle_stale_letters(headers: dict, actions: list, env:str):
+def handle_stale_letters(headers: dict, actions: list, env: str):
     # Fetch the JSON data from the URL
     url = f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/stale-letters"
 
@@ -111,16 +112,17 @@ def handle_stale_letters(headers: dict, actions: list, env:str):
         created_at_str = letter["created_at"].replace("Z", "+00:00")  # Replace "Z" with "+00:00" for parsing
         created_at = datetime.fromisoformat(created_at_str)
         letter_id = letter["id"]
-        action = "empty"
 
         if created_at < one_week_ago or letter['status'] == 'Uploaded':
             # If created_at is more than a week old, or it has already been uploaded then mark as aborted
             action = "mark-aborted"
-            mark_url = f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/letters/{letter_id}/mark-aborted"
+            mark_url = (f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/"
+                        f"letters/{letter_id}/mark-aborted")
         else:
             # If created_at is less than a week old and the status is not Uploaded, mark as created
             action = "mark-created"
-            mark_url = f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/letters/{letter_id}/mark-created"
+            mark_url = (f"http://rpe-send-letter-service-{env}.service.core-compute-{env}.internal/"
+                        f"letters/{letter_id}/mark-created")
 
         # Make the HTTP request to mark the letter
         response = requests.put(mark_url, data={}, headers=headers)
@@ -134,7 +136,8 @@ def handle_stale_letters(headers: dict, actions: list, env:str):
 
 def reprocess_stale_envelopes(headers: dict, actions: list, env: str):
     # Define the base URL of the GET endpoint to retrieve initial data
-    initial_data_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/stale-incomplete-envelopes"
+    initial_data_url = (f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/stale"
+                        f"-incomplete-envelopes")
 
     # Define the base URL of the PUT endpoint
     base_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/actions/"
@@ -153,8 +156,8 @@ def reprocess_stale_envelopes(headers: dict, actions: list, env: str):
         file_name = entry["file_name"]
 
         # Construct the URL for the specific envelope ID
-        url = base_url + envelope_id
-        new_url = f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/envelopes/{container}/{file_name}"
+        new_url = (f"http://bulk-scan-processor-{env}.service.core-compute-{env}.internal/"
+                   f"envelopes/{container}/{file_name}")
         notification_sent_status = fetch_data_with_retries(new_url)["status"]
 
         url = base_url + envelope_id + "/abort" if notification_sent_status else \
@@ -195,7 +198,7 @@ def reprocess_stale_envelopes(headers: dict, actions: list, env: str):
         else:
             actions.append(f"Check envelope: {new_url}")
             logger.error(f"PUT request failed for envelope ID: {envelope_id} "
-                            f"with zip file: {file_name} and container: {container}")
+                         f"with zip file: {file_name} and container: {container}")
             logger.error(f"Response status code: {put_response.status_code}")
             logger.error(f"Response content: {put_response.text}")
 
