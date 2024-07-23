@@ -19,6 +19,21 @@ def check_version_requirements():
     else:
         logger.info('Python version is supported, proceeding to next step')
 
+    logger.info('Checking yq version. This needs to basically be installed')
+    if is_yq_version_not_supported():
+        logger.error('Yq is probably not installed, or the script had a problem retrieving the version. '
+                     'Make sure that "brew install yq" has been run, and that it is updated.')
+        quit()
+    else:
+        logger.info('Yq is installed/supported, proceeding to next step')
+
+
+def is_yq_version_not_supported():
+    # Simply check the command returns version + major.minor of any value.
+    # If not, then more than likely yq is not installed and needs to be.
+    version = re.findall(r'(version \d+(?:\.\d+))', run_command('yq --version')[0])
+    return False if version else True
+
 
 def is_python_version_not_supported():
     req_python_version = (3, 9)
