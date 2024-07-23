@@ -66,7 +66,20 @@
       "name": "bulk-scan-payment-processor",
       "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
-      "envVarSubstitutions": {"JMS_ENABLED": "true", "SPRING_PROFILES_ACTIVE": "dev"},
+      "envVarSubstitutions": {
+        "JMS_ENABLED": "true",
+        "SPRING_PROFILES_ACTIVE": "dev",
+        "JMS_NAMESPACE": 5672,
+        "JMS_AMQP_CONNECTION_TEMPLATE": "tcp://localhost:61616",
+        "JMS_AMQP_CONNECTION_STRING_TEMPLATE": "tcp://localhost:61616",
+        "JMS_USERNAME": "admin",
+        "JMS_PASSWORD": "admin",
+        "JMS_RECEIVETIMEOUT": 30000,
+        "JMS_IDLETIMEOUT": 30000,
+        "S2S_URL": "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal",
+        "PAYMENTS_QUEUE_WRITE_ACCESS_KEY": "aNotNeededValue",
+        "PAYMENTS_QUEUE_WRITE_ACCESS_KEY_NAME": "aNotNeededValue"
+      },
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-payment-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
