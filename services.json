@@ -2,6 +2,7 @@
   "services": [
     {
       "name": "blob-router-service",
+      "dbName": "blob-router-service-db",
       "gitUrl": "git@github.com:hmcts/blob-router-service.git",
       "type": "java",
       "envVarSubstitutions": {
@@ -43,6 +44,7 @@
     },
     {
       "name": "bulk-scan-orchestrator",
+      "dbName": "bulk-scan-orchestrator-db",
       "gitUrl": "git@github.com:hmcts/bulk-scan-orchestrator.git",
       "type": "java",
       "envVarSubstitutions": {
@@ -64,6 +66,7 @@
     },
     {
       "name": "bulk-scan-payment-processor",
+      "dbName": "bulk-scan-payment-processor-db",
       "gitUrl": "git@github.com:hmcts/bulk-scan-payment-processor.git",
       "type": "java",
       "envVarSubstitutions": {
@@ -86,6 +89,7 @@
     },
     {
       "name": "bulk-scan-processor",
+      "dbName": "bulk-scan-processor-db",
       "gitUrl": "git@github.com:hmcts/bulk-scan-processor.git",
       "type": "java",
       "envVarSubstitutions": {
@@ -131,6 +135,7 @@
     },
     {
       "name": "send-letter-service",
+      "dbName": "send-letter-database",
       "gitUrl": "git@github.com:hmcts/send-letter-service.git",
       "type": "java",
       "envVarSubstitutions": {
@@ -154,6 +159,7 @@
     },
     {
       "name": "reform-scan-notification-service",
+      "dbName": "reform-scan-notification-service-db",
       "gitUrl": "git@github.com:hmcts/reform-scan-notification-service.git",
       "type": "java",
       "envVarSubstitutions": {

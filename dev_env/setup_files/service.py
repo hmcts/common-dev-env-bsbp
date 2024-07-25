@@ -26,8 +26,7 @@ def stop_all_services(file_path: str):
         for service in json.load(file)['services']:
             command = 'docker compose -f %s/dev_env/apps/%s/docker-compose.yml down -v' \
                       % (file_path, service['name'])
-            logger.info('Running command %s for %s' \
-                        % (command, service['name']))
+            logger.info('Running command %s for %s' % (command, service['name']))
             run_command(command)
 
 

@@ -12,6 +12,7 @@ def orchestrate_service(service, directory: str, db_only_for_service: bool, prom
 
 def orchestrate_service_setup(service, directory: str, db_only_for_service: bool, prompt_to_create_env: bool):
     service_name = service['name']
+    db_name = service['dbName']
     service_type = service['type']
     service_env_var_subs = service['envVarSubstitutions'] if 'envVarSubstitutions' in service else {}
     service_key_vault = service['keyVault'] if 'keyVault' in service else ''
@@ -30,6 +31,7 @@ def orchestrate_service_setup(service, directory: str, db_only_for_service: bool
     run_script_files('%s/bin' % file_path_of_service,
                      next(walk('%s/bin' % file_path_of_service), (None, None, []))[2],
                      service_name,
+                     db_name,
                      service_key_vault,
                      service_type,
                      db_only_for_service,
