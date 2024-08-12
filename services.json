@@ -140,6 +140,7 @@
       "gitUrl": "git@github.com:hmcts/send-letter-service.git",
       "type": "java",
       "envVarSubstitutions": {
+        "SPRING_PROFILES_ACTIVE": "dev",
         "LETTER_TRACKING_DB_PASSWORD": "letterservice",
         "LETTER_TRACKING_DB_USER_NAME": "letterservice",
         "LETTER_TRACKING_DB_HOST": "localhost",
