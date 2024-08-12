@@ -153,6 +153,8 @@
         "SCHEDULING_ENABLED": false,
         "FLYWAY_URL": "jdbc:postgresql://localhost:5435/send_letter",
         "APP_INSIGHTS_CONNECTION_STRING": "",
+        "FTP_PUBLIC_KEY": "refer to application dev yaml",
+        "FTP_PRIVATE_KEY": "refer to application dev yaml",
         "FTP_USER": "mosh",
         "FTP_HOSTNAME": "localhost",
         "FTP_PORT": 2222,
