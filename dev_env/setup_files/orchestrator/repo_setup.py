@@ -68,6 +68,9 @@ def run_script_files(file_path: str, list_of_files: list, service_name: str, db_
                 'azure-storage-emulator-azurite',
                 'init-storage'
             ))
+
+        if "setup-sftp.sh" in list_of_files:
+            call_command('sudo %s/setup-sftp.sh' % file_path)
     else:
         logger.info('Calling scripts: %s for %s' % (list_of_files, service_name))
         for file in list_of_files:

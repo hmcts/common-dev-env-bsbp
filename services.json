@@ -163,7 +163,7 @@
       },
       "keyVault": "rpe-send-letter",
       "chartLocation": "rpe-send-letter-service",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-sftp.sh"]
     },
     {
       "name": "reform-scan-notification-service",
