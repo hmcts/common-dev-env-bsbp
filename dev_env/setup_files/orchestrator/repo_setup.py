@@ -53,14 +53,15 @@ def copy_environment_vars(dir_path: str, environment_vars: dict, service_name: s
 
 
 def run_script_files(file_path: str, list_of_files: list, service_name: str, db_name: str, key_vault: str,
-                     service_type: str, all_docker_per_service: bool, prompt_to_create_env: bool, chart_location: str):
+                     service_type: str, all_docker_per_service: bool, prompt_to_create_env: bool, chart_location: str,
+                     env_vars_to_ignore: list):
     if len(list_of_files) >= 2 and 'setup-env.sh' in list_of_files and 'create-env-file.sh' in list_of_files:
         logger.info(
             'Found both create-env-file and setup-env scripts, so running the latter only, which also calls the prior')
         print(prompt_to_create_env)
-        call_command('sudo %s/setup-env.sh %s %s aat %s %s %s %s %s' % (
+        call_command('sudo %s/setup-env.sh %s %s aat %s %s %s %s %s %s' % (
             file_path, key_vault, service_name, service_type, all_docker_per_service, prompt_to_create_env,
-            chart_location, db_name))
+            chart_location, db_name, str(env_vars_to_ignore).replace(' ', '')))
 
         if "setup-azurite.sh" in list_of_files:
             call_command('sudo %s/setup-azurite.sh %s %s' % (

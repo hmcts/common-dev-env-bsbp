@@ -38,6 +38,7 @@
         "JMS_ENABLED": "true",
         "SPRING_PROFILES_ACTIVE": "dev"
       },
+      "envVarsToIgnore": [],
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-blob-router",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-azurite.sh"]
@@ -60,6 +61,7 @@
         "JMS_ENABLED": "true",
         "SPRING_PROFILES_ACTIVE": "dev"
       },
+      "envVarsToIgnore": [],
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-orchestrator",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -83,6 +85,7 @@
         "PAYMENTS_QUEUE_WRITE_ACCESS_KEY": "aNotNeededValue",
         "PAYMENTS_QUEUE_WRITE_ACCESS_KEY_NAME": "aNotNeededValue"
       },
+      "envVarsToIgnore": [],
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-payment-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -120,6 +123,7 @@
         "DELETE_COMPLETE_FILES_CRON": "0/10 * * * * *",
         "AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY": ""
       },
+      "envVarsToIgnore": [],
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -130,6 +134,7 @@
       "gitUrl": "git@github.com:hmcts/send-letter-client.git",
       "type": "java",
       "envVarSubstitutions": {},
+      "envVarsToIgnore": [],
       "keyVault": "",
       "chartLocation": "",
       "scriptsRequired": []
@@ -154,13 +159,12 @@
         "SCHEDULING_ENABLED": true,
         "FLYWAY_URL": "jdbc:postgresql://localhost:5435/send_letter",
         "APP_INSIGHTS_CONNECTION_STRING": "",
-        "FTP_PUBLIC_KEY": "refer to application dev yaml",
-        "FTP_PRIVATE_KEY": "refer to application dev yaml",
         "FTP_USER": "mosh",
         "FTP_HOSTNAME": "localhost",
         "FTP_PORT": 2222,
         "FTP_FINGERPRINT": "48:31:3c:d5:1d:3b:71:f7:7b:ae:3d:54:9a:3d:62:7e"
       },
+      "envVarsToIgnore": ["FTP_PUBLIC_KEY", "FTP_PRIVATE_KEY"],
       "keyVault": "rpe-send-letter",
       "chartLocation": "rpe-send-letter-service",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-sftp.sh"]
@@ -182,6 +186,7 @@
         "JMS_ENABLED": "true",
         "SPRING_PROFILES_ACTIVE": "dev"
       },
+      "envVarsToIgnore": [],
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-notification-service",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -197,6 +202,7 @@
         "AUTH_PROVIDER_SERVICE_CLIENT_BASEURL": "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal",
         "SEND_LETTER_URL": "http://localhost:8485"
       },
+      "envVarsToIgnore": [],
       "keyVault": "",
       "chartLocation": "",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]

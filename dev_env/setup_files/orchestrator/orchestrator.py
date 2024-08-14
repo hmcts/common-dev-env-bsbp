@@ -19,6 +19,7 @@ def orchestrate_service_setup(service, directory: str, db_only_for_service: bool
     scripts_required = service['scriptsRequired'] if 'scriptsRequired' in service else []
     file_path_of_service = '%s/dev_env/apps/%s' % (directory, service_name)
     chart_location = service['chartLocation']
+    env_vars_to_ignore = service['envVarsToIgnore']
 
     create_repo_if_required(service_name, file_path_of_service, service['gitUrl'])
     copy_script_files(directory, service_name, scripts_required) \
@@ -36,4 +37,5 @@ def orchestrate_service_setup(service, directory: str, db_only_for_service: bool
                      service_type,
                      db_only_for_service,
                      prompt_to_create_env,
-                     chart_location)
+                     chart_location,
+                     env_vars_to_ignore)

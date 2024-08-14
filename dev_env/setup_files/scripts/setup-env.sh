@@ -12,6 +12,7 @@ DB_ONLY="${5}"
 CREATE_ENV_PROMPT="${6}"
 CHART_FOLDER="${7}"
 DB_NAME="${8}"
+IGNORED_ENV_VARS="${9}"
 
 MY_PATH="$(dirname -- "${BASH_SOURCE[0]}")"
 PARENT_PATH="$(dirname "${MY_PATH}")"
@@ -22,10 +23,10 @@ then
         if [[ $REPLY =~ ^[Yy]$ ]]
         then
                 echo "Script setup-env.sh called to run docker components for ${SERVICE_NAME} with type of ${SERVICE_TYPE}. DB Only? ${DB_ONLY} "
-                sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}"
+                sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}" "${IGNORED_ENV_VARS}"
         fi
 else
-        sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}"
+        sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}" "${IGNORED_ENV_VARS}"
 fi
 
 if [ "${DB_ONLY}" != "y" ]

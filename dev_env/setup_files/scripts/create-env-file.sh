@@ -15,6 +15,8 @@ KEY_VAULT="${1}"
 SERVICE_NAME="${2}"
 ENV="${3}"
 CHART_FOLDER="${4}"
+ENVS_TO_IGNORE=$(echo "${5}" | tr -d '[]"')
+IGNORED_ENV_VARS_ARRAY=($(echo "${ENVS_TO_IGNORE}" | tr ',' ' '))
 
 function fetch_secret_from_keyvault() {
     local SECRET_NAME=$1
@@ -75,7 +77,20 @@ for ((i=0; i <= LENGTH-1; i+=2)) do
   ENV_NAME=$(echo "${ENV_NAME}" | tr . _)
   ENV_NAME=$(echo "${ENV_NAME}" | tr - _)
 
-  if [[ ! " ${SUBS_KEYS_ARRAY[*]} " =~ ${ENV_NAME} ]]; then
+  # Flag to determine if the environment variable should be ignored
+  is_env_ignored=false
+
+  # Check if ENV_NAME is in IGNORED_ENV_VARS_ARRAY
+  for ignored_var in "${IGNORED_ENV_VARS_ARRAY[@]}"; do
+    if [[ "${ignored_var}" == "${ENV_NAME}" ]]; then
+      is_env_ignored=true
+      break
+    fi
+  done
+
+  if [[ "${is_env_ignored}" == true ]]; then
+    echo "Ignoring ${ENV_NAME} as it is listed within ignore env vars list"
+  elif [[ ! " ${SUBS_KEYS_ARRAY[*]} " =~ ${ENV_NAME} ]]; then
     ENV_VALUE=${SECRETS_AS_ARRAY[${i}]}
     store_secret_from_keyvault "${ENV_NAME}" "${ENV_VALUE}"
   else
