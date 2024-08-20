@@ -1,12 +1,14 @@
 from dev_env.setup_files.logging.logger import logger
 from dev_env.setup_files.orchestrator.orchestrator import orchestrate_service
-from dev_env.setup_files.utils.utils import run_command
+from dev_env.setup_files.utils.utils import run_command, query_yes_no
 import json
 
 
 def setup_all_services(db_only_per_service: bool, file_path: str):
     with open('./services.json') as file:
         for service in json.load(file)['services']:
+            if query_yes_no('Do you want to reset all branches to master and run git pull?'):
+                reset_branches(file_path)
             orchestrate_service(service,
                                 file_path,
                                 db_only_per_service, 'n')
