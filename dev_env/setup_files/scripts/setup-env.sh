@@ -2,7 +2,7 @@
 
 # Main script for setting up environment
 # Format of command: sudo ./setup-env.sh <key vault> <service name (in the chart yaml)> <env> <service type> <db only> <create env file prompt> <chart folder location>
-# Example of use: sudo ./setup-env.sh bulk-scan bulk-scan-orchestrator aat java y y bulk-scan-orchestrator
+# Example of use: sudo ./setup-env.sh bulk-scan bulk-scan-orchestrator demo java y y bulk-scan-orchestrator
 # Author/contact for updating: Adam Stevenson
 KEY_VAULT="${1}"
 SERVICE_NAME="${2}"

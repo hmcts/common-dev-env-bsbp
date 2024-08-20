@@ -59,7 +59,7 @@ def run_script_files(file_path: str, list_of_files: list, service_name: str, db_
         logger.info(
             'Found both create-env-file and setup-env scripts, so running the latter only, which also calls the prior')
         print(prompt_to_create_env)
-        call_command('sudo %s/setup-env.sh %s %s aat %s %s %s %s %s %s' % (
+        call_command('sudo %s/setup-env.sh %s %s demo %s %s %s %s %s %s' % (
             file_path, key_vault, service_name, service_type, all_docker_per_service, prompt_to_create_env,
             chart_location, db_name, str(env_vars_to_ignore).replace(' ', '')))
 
@@ -75,7 +75,7 @@ def run_script_files(file_path: str, list_of_files: list, service_name: str, db_
     else:
         logger.info('Calling scripts: %s for %s' % (list_of_files, service_name))
         for file in list_of_files:
-            call_command('sudo ./%s/%s %s %s aat' % (file_path, file, key_vault, service_name))
+            call_command('sudo ./%s/%s %s %s demo' % (file_path, file, key_vault, service_name))
 
 
 def add_gitignore_lines(file_path_of_service: str, lines_to_add: list):
