@@ -3,7 +3,7 @@ from dev_env.setup_files.utils.utils import query_yes_no, run_command
 from dev_env.setup_files.utils.prompts import run_db_only
 from dev_env.setup_files.logging.logger import logger
 from dev_env.setup_files.service import (start_activemq, stop_activemq, setup_one_service, setup_all_services,
-                                         stop_all_services, stop_one_service, get_docker_log_service)
+                                         stop_all_services, stop_one_service, get_docker_log_service, reset_branches)
 from dev_env.daily_checks.bau_tasks import run_bsp_bau_tasks
 
 
@@ -24,6 +24,9 @@ def determine_action_based_on_command(file_path: str):
 
     elif len(command) == 2 and 'stop' in command and 'activemq':
         stop_activemq(file_path)
+
+    elif len(command) == 2 and 'reset' in command and 'branches':
+        reset_branches(file_path)
 
     elif len(command) == 3 and 'start' in command and 'service' in command and 'all' in command:
         stop_activemq(file_path)

@@ -43,5 +43,12 @@ def stop_activemq(file_path: str):
     run_command('docker compose -f %s/dev_env/setup_files/activemq/docker-compose.yml down -v' % file_path)
 
 
+def reset_branches(file_path: str):
+    with open('./services.json') as file:
+        for service in json.load(file)['services']:
+            run_command('git -C %s/dev_env/apps/%s checkout master' % (file_path, service['name']))
+            run_command('git -C %s/dev_env/apps/%s pull' % (file_path, service['name']))
+
+
 def get_docker_log_service(file_path: str, service_name: str):
     run_command('docker compose -f %s/dev_env/apps/%s/docker-compose.yml logs' % (file_path, service_name))
