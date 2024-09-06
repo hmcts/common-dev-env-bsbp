@@ -31,7 +31,7 @@ def check_version_requirements():
 def is_yq_version_not_supported():
     # Simply check the command returns version + major.minor of any value.
     # If not, then more than likely yq is not installed and needs to be.
-    version = re.findall(r'(version \d+(?:\.\d+))', run_command('yq --version')[0])
+    version = re.findall(r'(version v\d+(?:\.\d+))', run_command('yq --version')[0])
     return False if version else True
 
 
