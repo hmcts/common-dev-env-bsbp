@@ -42,9 +42,9 @@ then
             sudo rm -rf .gradle
             cd ${MY_PATH}
         fi
-        docker-compose -f ${PARENT_PATH}/docker-compose.yml down -v
-        docker-compose -f ${PARENT_PATH}/docker-compose.yml build
-        docker-compose -f ${PARENT_PATH}/docker-compose.yml up -d
+        docker compose -f ${PARENT_PATH}/docker-compose.yml down -v
+        docker compose -f ${PARENT_PATH}/docker-compose.yml build
+        docker compose -f ${PARENT_PATH}/docker-compose.yml up -d
         echo "Setup complete! You can manage these services now via normal docker commands. Double check all is well with docker-compose ps"
 else
         echo "Installing db only if listed in docker compose yml for ${SERVICE_NAME}"

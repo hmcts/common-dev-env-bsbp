@@ -18,5 +18,5 @@ else
     echo "No service name containing 'sftp' found."
 fi
 
-docker-compose -f ${PARENT_PATH}/docker-compose.yml build ${service_name}
-docker-compose -f ${PARENT_PATH}/docker-compose.yml up -d ${service_name}
+docker compose -f ${PARENT_PATH}/docker-compose.yml build ${service_name}
+docker compose -f ${PARENT_PATH}/docker-compose.yml up -d ${service_name}
