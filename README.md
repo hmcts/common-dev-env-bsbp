@@ -1,6 +1,14 @@
 # Common Dev Env (for Bulk Scan/Bulk Print)
 An attempt to create a simplified way of running BSBP services locally on mac machines for a specified list of github repos
 
+## Pre-requisites
+
+Please run the following commands to ensure you don't have issues pulling down Docker Images:
+1. nano ~/.docker/config.json
+2. remove "credsStore": "desktop"
+
+Can simply remove the line and do Control + O, then Control + X to leave. 
+
 ## Purpose
 
 This will primarilly be used for developers to pull down and run specific services which are located in the projects `services.json` file. Any modifications to what service will be cloned and run can be done there. 

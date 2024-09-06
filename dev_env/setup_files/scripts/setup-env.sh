@@ -50,7 +50,6 @@ else
         echo "Installing db only if listed in docker compose yml for ${SERVICE_NAME}"
         sed -i '' 's/host.docker.internal/localhost/' ${PARENT_PATH}/.env
         docker compose -f ${PARENT_PATH}/docker-compose.yml down -v
-        sudo chown -R $(whoami) ~/.docker
         docker compose -f ${PARENT_PATH}/docker-compose.yml build "${DB_NAME}"
         docker compose -f ${PARENT_PATH}/docker-compose.yml up -d "${DB_NAME}"
         echo "Setup complete! Next step is to add the .env file through the ENV plugin and run the application afterwards"
