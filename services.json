@@ -13,6 +13,8 @@
         "STORAGE_URL": "http://localhost:10000/reformscanlocal",
         "STORAGE_BULKSCAN_URL": "http://localhost:10000/bulkscanlocal",
         "STORAGE_PCQ_URL": "http://localhost:10000/pcqlocal",
+        "BULK_SCAN_PROCESSOR_URL": "http://localhost:8581",
+        "STORAGE_BLOB_SELECTED_CONTAINER": "ALL",
         "DB_PASSWORD": "blob_router",
         "DB_USER": "blob_router",
         "DB_HOST": "localhost",
