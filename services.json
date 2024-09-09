@@ -100,7 +100,6 @@
         "DB_PASSWORD": "bulk_scan_processor",
         "DB_USER": "bulk_scan_processor",
         "DB_HOST": "localhost",
-        "STORAGE_BLOB_SELECTED_CONTAINER": "ALL",
         "DB_PORT": 5435,
         "DB_NAME": "bulk_scan_processor",
         "DB_CONN_OPTIONS": "",
