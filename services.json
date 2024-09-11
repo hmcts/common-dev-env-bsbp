@@ -78,6 +78,7 @@
         "JMS_NAMESPACE": 5672,
         "JMS_AMQP_CONNECTION_TEMPLATE": "tcp://localhost:61616",
         "JMS_AMQP_CONNECTION_STRING_TEMPLATE": "tcp://localhost:61616",
+        "PROCESSOR_URL": "http://localhost:8581",
         "JMS_USERNAME": "admin",
         "JMS_PASSWORD": "admin",
         "JMS_RECEIVETIMEOUT": 30000,
@@ -122,7 +123,9 @@
         "DELETE_REJECTED_FILES_CRON": "0 0/10 * * * *",
         "INCOMPLETE_ENVELOPES_TASK_CRON": "0 */15 * * * *",
         "DELETE_COMPLETE_FILES_CRON": "0/10 * * * * *",
-        "AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY": ""
+        "AZURE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY": "",
+        "SCAN_DELAY": 30000,
+        "UPLOAD_TASK_DELAY": 30000
       },
       "envVarsToIgnore": [],
       "keyVault": "bulk-scan",
