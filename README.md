@@ -63,6 +63,7 @@ Where `:command` is one of the following:
 10. reset branches (to set each services branch to master and run git pull)
 
 ## Connecting to FileZilla
+
 For services where the `setup-sftp.sh` script is required, you can connect to the local server via FileZilla
 (or the command line if preferred).
 
@@ -78,6 +79,7 @@ To connect to SFTP:
 4. Click connect. 
 
 ## Setting up Local SFTP Configuration For a Service
+
 For this to work with a service the following is needed:
 1. The service needs a docker-compose.yaml
 2. Within this file, there needs to be a service (within the `services` section) that has the value `sftp` as a part of the name.
@@ -85,7 +87,16 @@ For this to work with a service the following is needed:
 4. For an example, refer [to this link](https://github.com/hmcts/send-letter-service/tree/master/docker/sftp)
 
 ## Connecting to Local Azure Blob Storage
+
 For services where the `setup-azurite.sh` script is required, you can connect to the local server via Microsoft Azure Storage Explorer.
+For a specific example of how to do this I will explore Bulk Scan which should give a picture of what is required:
+
+1. Open Microsoft Azure Storage Explorer
+2. Click the connection button, and select the “storage account or service” option. 
+3. Add in the <storage account names> SAS token found in the docker -> storage -> init-azurite.sh file (using the example above).
+4. If you get an authentication error when doing this. Instead pick the Local Storage Emulator option instead, and find the account key via the SAS token. Reference the account name as bulk/reformscanlocal too if using the example.
+5. If using Bulk Scan example, do this again for the bulkscanlocal SAS token found within the same file
+6. Refresh the explorer, and you should be able to see all the containers added through the shell script! Woo!
 
 ## Setting up Local Azure Blob Storage For a Service
 
@@ -121,10 +132,11 @@ For this to work with a service the following is needed:
 6. For a complete example, [see here](https://github.com/hmcts/blob-router-service/tree/master/docker/storage)
 
 ## Connecting to Queues (With activemq)
+
 If you want to explore queues, run the dev-env and an activemq instance will be spun up. Within this currently several queues are configured.
 To access this go to: 
 1. http://localhost:8161
-2. Use `user` admin and pass `password`
+2. Use `admin` as username and `password` as password
 
 If you then want to add a message to a queue, you simply need to click on it and add the message. 
 To determine what message to add depends on the context of the service. You may want to go to Azure and look 
