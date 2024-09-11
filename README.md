@@ -3,33 +3,41 @@ An attempt to create a simplified way of running BSBP services locally on mac ma
 
 ## Pre-requisites
 
+1. Ensure your VPN is on! 
+
 Please run the following commands to ensure you don't have issues pulling down Docker Images:
-1. nano ~/.docker/config.json
-2. remove "credsStore": "desktop"
+
+1. az acr login -n hmctspublic.azurecr.io
+2. nano ~/.docker/config.json
+3. remove "credsStore": "desktop"
 
 Can simply remove the line and do Control + O, then Control + X to leave. 
 
 ## Purpose
 
-This will primarilly be used for developers to pull down and run specific services which are located in the projects `services.json` file. Any modifications to what service will be cloned and run can be done there. 
+This will primarily be used for developers to pull down and run specific services which are located in 
+the projects `services.json` file. Any modifications to what service will be cloned and run can be done there. 
 
-This will take roughly a few minutes to spin up the BSBP services (at present, but can be expanded to other projects) and enables a simply way to provide end-to-end testing, or for opening a simple application in IntelliJ, running and debugging...and so forth 
+This will take roughly a few minutes to spin up the BSBP services (at present, but can be expanded to other projects) 
+and enables a simple way to provide end-to-end testing, or for opening a simple application in IntelliJ, running and 
+debugging...and so forth 
 
 For each service it will do the following: 
 
-1. Prompt the user as to whether they want only the database spun up, or the service as well (catering for IDE running vs docker running)
+1. Prompt the user whether they want only the database spun up, or the service as well (catering for IDE running vs docker running)
 2. clone down the repo if not already cloned down 
 3. copy script files to the bin directory which will be used for creating the .env file which is needed for the service to run in docker (or locally through IntellIJ / whatever IDE you may use via the env plugin) 
 4. for said service, those script files will be added to the .gitignore (if not already there)
 5. Run the setup script which will create the environment variables, assemble the jar, and run the docker services listed in the docker-compose.yml file
 
-The simplest way to spin up all of the services is to run:
+The simplest way to spin up all the services is to run:
 
 python3 ./start.py start service all
 
 ## Requirements 
 
-Make sure you have the following on your machine. Although you will prompted if you don't when running the scripts, so not a big worry if you don't check beforehand
+Make sure you have the following on your machine. Although you will be prompted if you don't when running the scripts, so 
+not a big worry if you don't check beforehand
 
 1. python 3 version 3.9 or later (simply run `python3 --version` to check)
 2. Bash 4 or later (`bash --version` to check in a terminal window)
@@ -53,6 +61,74 @@ Where `:command` is one of the following:
 8. get docker logs :service (get docker logs for one service)
 9. run dailychecks <env> (requires bearer token)
 10. reset branches (to set each services branch to master and run git pull)
+
+## Connecting to FileZilla
+For services where the `setup-sftp.sh` script is required, you can connect to the local server via FileZilla
+(or the command line if preferred).
+
+To connect to SFTP:
+1. Download FileZilla
+2. Navigate to the location where the sftp certificates are configured (for example, docker/database) and acquire the public certificate.
+3. Navigate to FileZilla and set the site settings accordingly:
+   1. Protocol: SFTP - SSH File Transfer Protocol
+   2. Host: localhost
+   3. Logon Type: Key file
+   4. User: the one configured as a part of the docker-compose.yaml setup. For example: mosh
+   5. Key file: the downloaded public key for the local dev-env `only`. 
+4. Click connect. 
+
+## Setting up Local SFTP Configuration For a Service
+For this to work with a service the following is needed:
+1. The service needs a docker-compose.yaml
+2. Within this file, there needs to be a service (within the `services` section) that has the value `sftp` as a part of the name.
+3. For the service that's configured, the certificates that are required need to be managed accordingly. Normally there is a Dockerfile that exists that manages it and sets up the certificates. 
+4. For an example, refer [to this link](https://github.com/hmcts/send-letter-service/tree/master/docker/sftp)
+
+## Connecting to Local Azure Blob Storage
+For services where the `setup-azurite.sh` script is required, you can connect to the local server via Microsoft Azure Storage Explorer.
+
+## Setting up Local Azure Blob Storage For a Service
+
+For this to work with a service the following is needed:
+1. The service needs a docker-compose.yaml and the `services.json` needs `setup-azurite.sh` as a part of the required scripts. 
+2. Ensure the docker-compose.yaml has the following:
+   ```yaml
+     azure-storage-emulator-azurite:
+        image: mcr.microsoft.com/azure-storage/azurite
+        command: azurite-blob --blobHost 0.0.0.0 --loose --skipApiVersionCheck
+        environment:
+           AZURITE_ACCOUNTS: container:key;container2:key2; (can be more than one, replace container and key values)
+        volumes:
+           - ./<service-name>-azure-blob-data:/opt/azurite/folder
+        ports:
+           - 10000:10000
+     init-storage:
+        build:
+           context: ./docker/storage
+        links:
+           - azure-storage-emulator-azurite
+        depends_on:
+           - azure-storage-emulator-azurite
+   ```
+3. Make sure the /docker/storage path exists for the repo.
+4. Within it, the init.azurite.sh file (or applicable) will be run as a part of the build context. Ensure it contains the setup required for users, containers and so forth, for example:
+   ```shell
+   SOURCE_CONNECTION_STRING="DefaultEndpointsProtocol=http;AccountName=<account name to add>;AccountKey=<a random key>;BlobEndpoint=http://azure-storage-emulator-azurite:10000/<account name>;"
+
+   az storage container create --name <container> --connection-string $SOURCE_CONNECTION_STRING
+   ```
+5. Ensure as a part of the running of the service that the docker container is created for `azure-azurite`, as this is required to connect using [Azure Storage Explorer](#connecting-to-local-azure-blob-storage)
+6. For a complete example, [see here](https://github.com/hmcts/blob-router-service/tree/master/docker/storage)
+
+## Connecting to Queues (With activemq)
+If you want to explore queues, run the dev-env and an activemq instance will be spun up. Within this currently several queues are configured.
+To access this go to: 
+1. http://localhost:8161
+2. Use `user` admin and pass `password`
+
+If you then want to add a message to a queue, you simply need to click on it and add the message. 
+To determine what message to add depends on the context of the service. You may want to go to Azure and look 
+at an existing Service Bus and look at some examples. 
 
 ## Contacts
 
