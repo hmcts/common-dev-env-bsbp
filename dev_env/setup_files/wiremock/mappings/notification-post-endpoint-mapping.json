@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/notifications"
+  },
+  "response": {
+    "status": 201,
+    "body": "{\"notification_id\": \"{{randomValue length=5 type='NUMERIC'}}\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": ["response-template"]
+  }
+}

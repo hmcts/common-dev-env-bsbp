@@ -188,7 +188,9 @@
         "FLYWAY_SKIP_MIGRATIONS": false,
         "FLYWAY_NOOP_STRATEGY": false,
         "JMS_ENABLED": "true",
-        "SPRING_PROFILES_ACTIVE": "dev"
+        "SPRING_PROFILES_ACTIVE": "dev",
+        "PENDING_NOTIFICATIONS_SEND_DELAY_IN_MINUTE": 1,
+        "CLIENTS_ERROR_NOTIFICATIONS_URL": "http://localhost:9090"
       },
       "envVarsToIgnore": [],
       "keyVault": "reform-scan",

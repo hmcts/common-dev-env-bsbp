@@ -97,7 +97,7 @@ def add_gitignore_lines(file_path_of_service: str, lines_to_add: list):
     for line in lines_to_add:
         run_command("echo '%s' >> %s/.gitignore" % (line, file_path_of_service))
     logger.debug('Added the following lines to the .gitignore file at %s: %s'
-                % (file_path_of_service, lines_to_add)) if len(lines_to_add) > 0 else \
+                 % (file_path_of_service, lines_to_add)) if len(lines_to_add) > 0 else \
         logger.debug('No files added to .gitignore file at %s' % file_path_of_service)
 
 
@@ -110,3 +110,16 @@ def check_gitignore_file(file_path_of_service: str):
     add_gitignore_lines(file_path_of_service,
                         (list(set(final_list) - set(run_command("grep -E '%s' %s/.gitignore"
                                                                 % ('|'.join(final_list), file_path_of_service))))))
+
+
+def check_for_and_create_wiremock_mappings():
+    logger.info('Setting up mocks for service.')
+    run_command('docker pull wiremock/wiremock')
+    is_wiremock_up = run_command('docker ps --filter "name=wiremock" --format "{{.Status}}"')
+    if len(is_wiremock_up) == 1 and 'Up' in is_wiremock_up[0]:
+        run_command('docker stop wiremock')
+        run_command('docker rm wiremock')
+
+    run_command('docker run -d -p 9090:8080 --name wiremock \
+        -v $(pwd)/dev_env/setup_files/wiremock/mappings:/home/wiremock/mappings \
+        wiremock/wiremock --local-response-templating')

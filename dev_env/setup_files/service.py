@@ -1,5 +1,6 @@
 from dev_env.setup_files.logging.logger import logger
 from dev_env.setup_files.orchestrator.orchestrator import orchestrate_service
+from dev_env.setup_files.orchestrator.repo_setup import check_for_and_create_wiremock_mappings
 from dev_env.setup_files.utils.utils import run_command, query_yes_no
 import json
 
@@ -12,6 +13,7 @@ def setup_all_services(db_only_per_service: bool, file_path: str):
             orchestrate_service(service,
                                 file_path,
                                 db_only_per_service, 'n')
+        check_for_and_create_wiremock_mappings()
 
 
 def setup_one_service(db_only_per_service: bool, service_name: str, file_path: str):
@@ -21,6 +23,7 @@ def setup_one_service(db_only_per_service: bool, service_name: str, file_path: s
             if not service_json else orchestrate_service(service_json[0],
                                                          file_path,
                                                          db_only_per_service, 'y')
+        check_for_and_create_wiremock_mappings()
 
 
 def stop_all_services(file_path: str):
