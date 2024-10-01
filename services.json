@@ -93,6 +93,7 @@
         "PAYMENTS_QUEUE_WRITE_ACCESS_KEY_NAME": "aNotNeededValue"
       },
       "envVarsToIgnore": [],
+      "envVarsToAdd": {},
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-payment-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -133,6 +134,7 @@
         "UPLOAD_TASK_DELAY": 30000
       },
       "envVarsToIgnore": [],
+      "envVarsToAdd": {},
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-processor",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -144,6 +146,7 @@
       "type": "java",
       "envVarSubstitutions": {},
       "envVarsToIgnore": [],
+      "envVarsToAdd": {},
       "keyVault": "",
       "chartLocation": "",
       "scriptsRequired": []
@@ -174,6 +177,7 @@
         "FTP_FINGERPRINT": "48:31:3c:d5:1d:3b:71:f7:7b:ae:3d:54:9a:3d:62:7e"
       },
       "envVarsToIgnore": ["FTP_PUBLIC_KEY", "FTP_PRIVATE_KEY"],
+      "envVarsToAdd": {},
       "keyVault": "rpe-send-letter",
       "chartLocation": "rpe-send-letter-service",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-sftp.sh"]
@@ -198,6 +202,7 @@
         "CLIENTS_ERROR_NOTIFICATIONS_URL": "http://localhost:9090"
       },
       "envVarsToIgnore": [],
+      "envVarsToAdd": {},
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-notification-service",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
@@ -214,6 +219,7 @@
         "SEND_LETTER_URL": "http://localhost:8485"
       },
       "envVarsToIgnore": [],
+      "envVarsToAdd": {},
       "keyVault": "",
       "chartLocation": "",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
