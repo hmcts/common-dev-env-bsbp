@@ -129,13 +129,17 @@ def check_for_and_create_wiremock_mappings():
 
 
 def add_optional_env_vars(env_vars_to_add: dict, file_path_of_service_env_var: str, service_name: str):
-    # Load existing environment variables into a set
-    with open(file_path_of_service_env_var, 'r') as file:
-        existing_env_vars = set(line.strip().split('=')[0] for line in file if '=' in line)
+    if not os.path.exists(file_path_of_service_env_var):
+        # If there is no .env file in the location, skip appending the vars to it
+        logger.warn(f'.env file not found at {file_path_of_service_env_var}')
+    else:
+        # Load existing environment variables into a set
+        with open(file_path_of_service_env_var, 'r') as file:
+            existing_env_vars = set(line.strip().split('=')[0] for line in file if '=' in line)
 
-    # Append new environment variables only if they don't already exist
-    with open(file_path_of_service_env_var, 'a') as file:
-        for env_var_key, env_var_value in env_vars_to_add.items():
-            if env_var_key not in existing_env_vars:
-                logger.debug(f'Adding: {env_var_key} with {env_var_value} to .env for {service_name}')
-                file.write(f'{env_var_key}={env_var_value}\n')
+        # Append new environment variables only if they don't already exist
+        with open(file_path_of_service_env_var, 'a') as file:
+            for env_var_key, env_var_value in env_vars_to_add.items():
+                if env_var_key not in existing_env_vars:
+                    logger.debug(f'Adding: {env_var_key} with {env_var_value} to .env for {service_name}')
+                    file.write(f'{env_var_key}={env_var_value}\n')
