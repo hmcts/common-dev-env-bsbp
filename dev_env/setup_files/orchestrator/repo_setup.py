@@ -1,3 +1,4 @@
+import ast
 import logging
 from dev_env.setup_files.utils.utils import does_file_exist, does_path_exist, call_command, copy_file_from_to, \
     run_command
@@ -116,10 +117,25 @@ def check_for_and_create_wiremock_mappings():
     logger.info('Setting up mocks for service.')
     run_command('docker pull wiremock/wiremock')
     is_wiremock_up = run_command('docker ps --filter "name=wiremock" --format "{{.Status}}"')
-    if len(is_wiremock_up) == 1 and 'Up' in is_wiremock_up[0]:
+    if len(is_wiremock_up) == 0: # Cater for if it was stopped previously. An edge case...
+        run_command('docker rm wiremock')
+    elif len(is_wiremock_up) == 1 and 'Up' in is_wiremock_up[0]:
         run_command('docker stop wiremock')
         run_command('docker rm wiremock')
 
     run_command('docker run -d -p 9090:8080 --name wiremock \
         -v $(pwd)/dev_env/setup_files/wiremock/mappings:/home/wiremock/mappings \
         wiremock/wiremock --local-response-templating')
+
+
+def add_optional_env_vars(env_vars_to_add: dict, file_path_of_service_env_var: str, service_name: str):
+    # Load existing environment variables into a set
+    with open(file_path_of_service_env_var, 'r') as file:
+        existing_env_vars = set(line.strip().split('=')[0] for line in file if '=' in line)
+
+    # Append new environment variables only if they don't already exist
+    with open(file_path_of_service_env_var, 'a') as file:
+        for env_var_key, env_var_value in env_vars_to_add.items():
+            if env_var_key not in existing_env_vars:
+                logger.debug(f'Adding: {env_var_key} with {env_var_value} to .env for {service_name}')
+                file.write(f'{env_var_key}={env_var_value}\n')

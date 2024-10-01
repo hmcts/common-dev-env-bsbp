@@ -12,7 +12,8 @@ def setup_all_services(db_only_per_service: bool, file_path: str):
         for service in json.load(file)['services']:
             orchestrate_service(service,
                                 file_path,
-                                db_only_per_service, 'n')
+                                db_only_per_service,
+                                'n')
         check_for_and_create_wiremock_mappings()
 
 
@@ -22,7 +23,8 @@ def setup_one_service(db_only_per_service: bool, service_name: str, file_path: s
         quit('%s is not found within services.json, exiting...' % service_name) \
             if not service_json else orchestrate_service(service_json[0],
                                                          file_path,
-                                                         db_only_per_service, 'y')
+                                                         db_only_per_service,
+                                                         'y')
         check_for_and_create_wiremock_mappings()
 
 

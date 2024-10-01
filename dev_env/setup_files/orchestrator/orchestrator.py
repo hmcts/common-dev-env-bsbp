@@ -1,5 +1,8 @@
+import logging
+
 from dev_env.setup_files.orchestrator.repo_setup import create_repo_if_required, copy_script_files, \
-    copy_environment_vars, run_script_files, check_gitignore_file, remove_existing_scripts
+    copy_environment_vars, run_script_files, check_gitignore_file, remove_existing_scripts, \
+    add_optional_env_vars
 from dev_env.setup_files.logging.logger import logger
 from os import walk
 
@@ -41,5 +44,7 @@ def orchestrate_service_setup(service, directory: str, db_only_for_service: bool
                      prompt_to_create_env,
                      chart_location,
                      env_vars_to_ignore)
+    add_optional_env_vars(service['envVarsToAdd'], file_path_of_service + '/.env', service_name)
+
     logger.info('%s has been setup. If you are running in IntelliJ (or another IDE), please ensure you '
                 'configure it so the .env file is used to load environment variables.')

@@ -40,6 +40,10 @@
         "SPRING_PROFILES_ACTIVE": "dev"
       },
       "envVarsToIgnore": [],
+      "envVarsToAdd": {
+        "TEST": "testytesty",
+        "TEST2": "testytesty2"
+      },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-blob-router",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-azurite.sh"]
@@ -63,6 +67,7 @@
         "SPRING_PROFILES_ACTIVE": "dev"
       },
       "envVarsToIgnore": [],
+      "envVarsToAdd": {},
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-orchestrator",
       "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
