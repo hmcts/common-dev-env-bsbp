@@ -9,7 +9,7 @@
         "STORAGE_ACCOUNT_NAME": "reformscanlocal",
         "STORAGE_ACCOUNT_KEY": "cmVmb3Jtc2NhbmtleQo=",
         "STORAGE_ACCOUNT_SECONDARY_KEY": "",
-        "STORAGE_CRIME_CONNECTION_STRING": "DefaultEndpointsProtocol=http;AccountName=crime;AccountKey=Y3JpbWVrZXkK;BlobEndpoint=http://localhost:10000/crime;QueueEndpoint=http://localhost:10001/crime;",
+        "STORAGE_CRIME_CONNECTION_STRING": "DefaultEndpointsProtocol=http;AccountName=crimelocal;AccountKey=cmVmb3Jtc2NhbmtleQo=;BlobEndpoint=http://localhost:10000/crimelocal;QueueEndpoint=http://localhost:10001/crimelocal;",
         "STORAGE_URL": "http://localhost:10000/reformscanlocal",
         "STORAGE_BULKSCAN_URL": "http://localhost:10000/bulkscanlocal",
         "STORAGE_PCQ_URL": "http://localhost:10000/pcqlocal",
@@ -24,7 +24,7 @@
         "FLYWAY_NOOP_STRATEGY": false,
         "SMTP_HOST": false,
         "PCQ_ENABLED": true,
-        "DELETE_DISPATCHED_FILES_CRON": "0 0/10 * * * *",
+        "DELETE_DISPATCHED_FILES_CRON": "0 * * * * *",
         "HANDLE_REJECTED_FILES_CRON": "0/30 * * * * *",
         "REJECT_DUPLICATES_CRON": "0/30 * * * * *",
         "CHECK_NEW_ENVELOPES_CRON": "0 0 * * * *",
@@ -41,8 +41,11 @@
       },
       "envVarsToIgnore": [],
       "envVarsToAdd": {
-        "TEST": "testytesty",
-        "TEST2": "testytesty2"
+        "TEST_URL": "http://localhost:8584",
+        "TEST_RECONCILIATION_API_KEY": "anythingfornow",
+        "TEST_STORAGE_ACCOUNT_NAME": "reformscanlocal",
+        "TEST_STORAGE_ACCOUNT_KEY": "cmVmb3Jtc2NhbmtleQo=",
+        "TEST_STORAGE_ACCOUNT_URL": "http://localhost:10000/reformscanlocal"
       },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-blob-router",
