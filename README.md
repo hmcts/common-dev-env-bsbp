@@ -1,5 +1,20 @@
 # Common Dev Env (for Bulk Scan/Bulk Print)
-An attempt to create a simplified way of running BSBP services locally on mac machines for a specified list of github repos
+An attempt to create a simplified way of running services locally on Mac machines for a HMCTS specific GitHub repos.
+Can be extended to include other projects, as it is compatible with most HMCTS services that have the charts structure. 
+
+## Table of Contents
+
+* [Pre-requisites](#pre-requisites)
+* [Purpose](#purpose)
+* [Requirements](#requirements-)
+* [Specific commands on the BSBP dev env](#specific-commands-on-the-bsbp-dev-env)
+* [Connecting to FileZilla](#connecting-to-filezilla)
+* [Running Functional Tests for Each Service](#running-functional-tests-for-each-service)
+* [Setting up Local SFTP Configuration For a Service](#setting-up-local-sftp-configuration-for-a-service)
+* [Connecting to Local Azure Blob Storage](#connecting-to-local-azure-blob-storage)
+* [Setting up Local Azure Blob Storage For a Service](#setting-up-local-azure-blob-storage-for-a-service)
+* [Connecting to Queues (With activemq)](#connecting-to-queues-with-activemq)
+* [Contacts](#contacts)
 
 ## Pre-requisites
 
@@ -29,6 +44,7 @@ For each service it will do the following:
 3. copy script files to the bin directory which will be used for creating the .env file which is needed for the service to run in docker (or locally through IntellIJ / whatever IDE you may use via the env plugin) 
 4. for said service, those script files will be added to the .gitignore (if not already there)
 5. Run the setup script which will create the environment variables, assemble the jar, and run the docker services listed in the docker-compose.yml file
+6. Ensure that if any queues, sftp or blob storage is required that the relevant local dependencies are running (i.e. ApacheMQ, local storage etc.)
 
 The simplest way to spin up all the services is to run:
 
@@ -61,6 +77,18 @@ Where `:command` is one of the following:
 8. get docker logs :service (get docker logs for one service)
 9. run dailychecks <env> (requires bearer token)
 10. reset branches (to set each services branch to master and run git pull)
+
+## Running Functional Tests for Each Service
+
+This should be as simple as running the command to run the individual services tests.
+
+The following process should then enable you to run them from IntelliJ (or another IDE of choice): 
+1. Navigate to your IDE and open up the service you want to run the tests for. 
+2. Go to the .env file 
+3. Select all and copy. Then run the all the tests. They will fail. Stop them. 
+4. Go to the configuration for the tests that are being run. 
+5. Open the environment variables section, and paste them all in. Run again. They should hopefully pass! 
+6. Alternatively, you can use the EnvFile plugin if you have it. In which case you can tick a box and it removes a step or two from the above. 
 
 ## Connecting to FileZilla
 
