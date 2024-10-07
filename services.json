@@ -42,7 +42,7 @@
       "envVarsToIgnore": [],
       "envVarsToAdd": {
         "TEST_URL": "http://localhost:8584",
-        "TEST_RECONCILIATION_API_KEY": "anythingfornow",
+        "TEST_RECONCILIATION_API_KEY": "getMeFromAatKeyVault",
         "TEST_STORAGE_ACCOUNT_NAME": "reformscanlocal",
         "TEST_STORAGE_ACCOUNT_KEY": "cmVmb3Jtc2NhbmtleQo=",
         "TEST_STORAGE_ACCOUNT_URL": "http://localhost:10000/reformscanlocal"
