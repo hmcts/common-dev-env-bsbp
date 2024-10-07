@@ -1,6 +1,6 @@
 # Common Dev Env
 An attempt to create a simplified way of running services locally on Mac machines for a HMCTS specific GitHub repos.
-Can be extended to include other projects, as it is compatible with most HMCTS services that have the charts structure. 
+Can be extended to include other projects, as it is compatible with most HMCTS services that have the charts structure 
 
 ## Table of Contents
 
