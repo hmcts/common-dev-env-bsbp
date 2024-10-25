@@ -49,7 +49,11 @@
       },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-blob-router",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-azurite.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh",
+        "setup-azurite.sh"
+      ]
     },
     {
       "name": "bulk-scan-orchestrator",
@@ -73,7 +77,10 @@
       "envVarsToAdd": {},
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-orchestrator",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh"
+      ]
     },
     {
       "name": "bulk-scan-payment-processor",
@@ -99,7 +106,10 @@
       "envVarsToAdd": {},
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-payment-processor",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh"
+      ]
     },
     {
       "name": "bulk-scan-processor",
@@ -137,10 +147,29 @@
         "UPLOAD_TASK_DELAY": 30000
       },
       "envVarsToIgnore": [],
-      "envVarsToAdd": {},
+      "envVarsToAdd": {
+        "TEST_URL": "http://localhost:8581",
+        "TEST_SCAN_DELAY": 4000,
+        "TEST_RECONCILIATION_API_KEY": "getMeFromAATKeyVault",
+        "TEST_STORAGE_ACCOUNT_NAME": "bulkscanlocal",
+        "TEST_STORAGE_ACCOUNT_KEY": "cmVmb3Jtc2NhbmtleQo=",
+        "TEST_STORAGE_ACCOUNT_URL": "http://localhost:10000/bulkscanlocal",
+        "TEST_STORAGE_CONTAINER_NAME": "bulkscan",
+        "TEST_S2S_NAME": "bulk_scan_processor_tests",
+        "TEST_S2S_URL": "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal",
+        "TEST_S2S_SECRET": "test-s2s-secret-value-from-keyvault",
+        "FLUX_FUNC_TEST": "true",
+        "PROCESSED_ENVELOPES_QUEUE_NAMESPACE": 5672,
+        "PROCESSED_ENVELOPES_QUEUE_NAME": "processed-envelopes",
+        "PROCESSED_ENVELOPES_QUEUE_WRITE_ACCESS_KEY": "aNotNeededValue",
+        "PROCESSED_ENVELOPES_QUEUE_WRITE_ACCESS_KEY_NAME": "aNotNeededValue"
+      },
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-processor",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh"
+      ]
     },
     {
       "name": "send-letter-client",
@@ -179,11 +208,18 @@
         "FTP_PORT": 2222,
         "FTP_FINGERPRINT": "48:31:3c:d5:1d:3b:71:f7:7b:ae:3d:54:9a:3d:62:7e"
       },
-      "envVarsToIgnore": ["FTP_PUBLIC_KEY", "FTP_PRIVATE_KEY"],
+      "envVarsToIgnore": [
+        "FTP_PUBLIC_KEY",
+        "FTP_PRIVATE_KEY"
+      ],
       "envVarsToAdd": {},
       "keyVault": "rpe-send-letter",
       "chartLocation": "rpe-send-letter-service",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh", "setup-sftp.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh",
+        "setup-sftp.sh"
+      ]
     },
     {
       "name": "reform-scan-notification-service",
@@ -208,7 +244,10 @@
       "envVarsToAdd": {},
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-notification-service",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh"
+      ]
     },
     {
       "name": "send-letter-mock",
@@ -225,7 +264,10 @@
       "envVarsToAdd": {},
       "keyVault": "",
       "chartLocation": "",
-      "scriptsRequired": ["create-env-file.sh", "setup-env.sh"]
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh"
+      ]
     }
   ]
 }
