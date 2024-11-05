@@ -121,10 +121,9 @@ For a specific example of how to do this I will explore Bulk Scan which should g
 
 1. Open Microsoft Azure Storage Explorer
 2. Click the connection button, and select the “storage account or service” option. 
-3. Add in the <storage account names> SAS token found in the docker -> storage -> init-azurite.sh file (using the example above).
-4. If you get an authentication error when doing this. Instead pick the Local Storage Emulator option instead, and find the account key via the SAS token. Reference the account name as bulk/reformscanlocal too if using the example.
-5. If using Bulk Scan example, do this again for the bulkscanlocal SAS token found within the same file
-6. Refresh the explorer, and you should be able to see all the containers added through the shell script! Woo!
+3. Pick the Local Storage Emulator option, and find the account key via the SAS token (refer to the init.azurite file for this). Reference the account name as bulk/reformscanlocal too if using the example.
+4. If using Bulk Scan example, do this again for the bulkscanlocal SAS token found within the same file
+5. Refresh the explorer, and you should be able to see all the containers added through the shell script! Woo!
 
 ## Setting up Local Azure Blob Storage For a Service
 

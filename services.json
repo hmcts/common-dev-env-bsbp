@@ -74,7 +74,19 @@
         "SPRING_PROFILES_ACTIVE": "dev"
       },
       "envVarsToIgnore": [],
-      "envVarsToAdd": {},
+      "envVarsToAdd": {
+        "QUEUE_NAMESPACE": 5672,
+        "QUEUE_READ_ACCESS_KEY_NAME": "aNotNeededValue",
+        "QUEUE_WRITE_ACCESS_KEY_NAME": "aNotNeededValue",
+        "QUEUE_ENVELOPES_NAME": "envelopes",
+        "ENVELOPES_QUEUE_WRITE_ACCESS_KEY": "aNotNeededValue",
+        "ENVELOPES_QUEUE_READ_ACCESS_KEY": "aNotNeededValue",
+        "QUEUE_PAYMENTS_NAME": "payments",
+        "PAYMENTS_QUEUE_WRITE_ACCESS_KEY": "aNotNeededValue",
+        "PROCESSOR_S2S_NAME": "bulk_scan_processor",
+        "PROCESSOR_S2S_SECRET": "test-s2s-processor-secret-value-from-keyvault",
+        "JMS_AMQP_CONNECTION_TEMPLATE": "tcp://localhost:61616"
+      },
       "keyVault": "bulk-scan",
       "chartLocation": "bulk-scan-orchestrator",
       "scriptsRequired": [
