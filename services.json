@@ -253,7 +253,15 @@
         "CLIENTS_ERROR_NOTIFICATIONS_URL": "http://localhost:9090"
       },
       "envVarsToIgnore": [],
-      "envVarsToAdd": {},
+      "envVarsToAdd": {
+        "TEST_URL": "http://localhost:8585",
+        "NOTIFICATION_QUEUE_ACCESS_KEY_WRITE": "aNotNeededValue",
+        "NOTIFICATION_QUEUE_ACCESS_KEY_NAME_WRITE": "aNotNeededValue",
+        "NOTIFICATION_QUEUE_NAME": "notifications",
+        "NOTIFICATION_QUEUE_NAMESPACE": 5672,
+        "TEST_S2S_URL": "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal",
+        "TEST_S2S_SECRET": "test-s2s-secret-value-from-keyvault"
+      },
       "keyVault": "reform-scan",
       "chartLocation": "reform-scan-notification-service",
       "scriptsRequired": [
