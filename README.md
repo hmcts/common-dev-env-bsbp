@@ -97,14 +97,14 @@ For services where the `setup-sftp.sh` script is required, you can connect to th
 
 To connect to SFTP:
 1. Download FileZilla
-2. Navigate to the location where the sftp certificates are configured (for example, docker/database) and acquire the private certificate. An example of this would be the `id_dev_rsa.txt` file found in  https://github.com/hmcts/send-letter-service/tree/master/docker/sftp/ssh
+2. Navigate to the location where the sftp certificates are configured (for example, docker/database) and acquire the key. An example of this would be the `id_dev_rsa.txt` file found in  https://github.com/hmcts/send-letter-service/tree/master/docker/sftp/ssh
 4. Navigate to FileZilla and set the site settings accordingly:
    1. Protocol: SFTP - SSH File Transfer Protocol
    2. Port: 2222
    3. Host: localhost
    4. Logon Type: Key file
    5. User: the one configured as a part of the docker-compose.yaml setup. For example: mosh
-   6. Key file: the downloaded public key for the local dev-env `only`. 
+   6. Key file: the downloaded key as found above for the local dev-env `only`. 
 5. Click connect. 
 
 ## Setting up Local SFTP Configuration For a Service
