@@ -71,7 +71,8 @@
         "FLYWAY_NOOP_STRATEGY": false,
         "DELETE_ENVELOPES_DLQ_MESSAGES_CRON": "1 * * * * *",
         "JMS_ENABLED": "true",
-        "SPRING_PROFILES_ACTIVE": "dev"
+        "SPRING_PROFILES_ACTIVE": "dev",
+        "PAYMENT_API_URL": "http://localhost:8583/payment"
       },
       "envVarsToIgnore": [],
       "envVarsToAdd": {
