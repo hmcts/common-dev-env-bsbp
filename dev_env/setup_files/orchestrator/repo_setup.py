@@ -63,23 +63,23 @@ def run_script_files(file_path: str, list_of_files: list, service_name: str, db_
             'The commands will run to set up %s, please be patient as this can take a minute or two...'
             'You may be asked to enter your password to enable secrets to be retrieved.' % service_name)
         print(prompt_to_create_env)
-        call_command('sudo %s/setup-env.sh %s %s aat %s %s %s %s %s %s' % (
+        call_command('%s/setup-env.sh %s %s aat %s %s %s %s %s %s' % (
             file_path, key_vault, service_name, service_type, all_docker_per_service, prompt_to_create_env,
             chart_location, db_name, str(env_vars_to_ignore).replace(' ', '')))
 
         if "setup-azurite.sh" in list_of_files:
-            call_command('sudo %s/setup-azurite.sh %s %s' % (
+            call_command('%s/setup-azurite.sh %s %s' % (
                 file_path,
                 'azure-storage-emulator-azurite',
                 'init-storage'
             ))
 
         if "setup-sftp.sh" in list_of_files:
-            call_command('sudo %s/setup-sftp.sh' % file_path)
+            call_command('%s/setup-sftp.sh' % file_path)
     else:
         logger.info('Calling scripts: %s for %s' % (list_of_files, service_name))
         for file in list_of_files:
-            call_command('sudo ./%s/%s %s %s aat' % (file_path, file, key_vault, service_name))
+            call_command('./%s/%s %s %s aat' % (file_path, file, key_vault, service_name))
 
 
 def remove_existing_scripts(file_path: str, list_of_scripts: list, list_of_files_in_location: list):

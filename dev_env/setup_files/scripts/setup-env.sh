@@ -23,10 +23,10 @@ then
         if [[ $REPLY =~ ^[Yy]$ ]]
         then
                 echo "Script setup-env.sh called to run docker components for ${SERVICE_NAME} with type of ${SERVICE_TYPE}. DB Only? ${DB_ONLY} "
-                sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}" "${IGNORED_ENV_VARS}"
+                ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}" "${IGNORED_ENV_VARS}"
         fi
 else
-        sudo ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}" "${IGNORED_ENV_VARS}"
+        ${MY_PATH}/create-env-file.sh "${KEY_VAULT}" "${SERVICE_NAME}" "${ENV}" "${CHART_FOLDER}" "${IGNORED_ENV_VARS}"
 fi
 
 if [ "${DB_ONLY}" != "y" ]
@@ -37,9 +37,9 @@ then
         then
             echo "Assembling java service through gradlew to ensure we have a build folder with a jar for: ${SERVICE_NAME}"
             cd ${PARENT_PATH}
-            sudo rm -rf .gradle
-            sudo ./gradlew assemble
-            sudo rm -rf .gradle
+            rm -rf .gradle
+            ./gradlew assemble
+            rm -rf .gradle
             cd ${MY_PATH}
         fi
         docker compose -f ${PARENT_PATH}/docker-compose.yml down -v
