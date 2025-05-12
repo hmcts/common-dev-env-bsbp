@@ -301,6 +301,18 @@
         "create-env-file.sh",
         "setup-env.sh"
       ]
+    },
+    {
+      "name": "bsp-cron-trigger",
+      "dbName": "",
+      "gitUrl": "git@github.com:hmcts/bsp-cron-trigger.git",
+      "type": "java",
+      "envVarSubstitutions": {},
+      "envVarsToIgnore": [],
+      "envVarsToAdd": {},
+      "keyVault": "",
+      "chartLocation": "",
+      "scriptsRequired": []
     }
   ]
 }
