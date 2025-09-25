@@ -309,10 +309,16 @@
       "type": "java",
       "envVarSubstitutions": {},
       "envVarsToIgnore": [],
-      "envVarsToAdd": {},
+      "envVarsToAdd": {
+        "SEND_LETTER_SERVICE_URL": "http://localhost:8485",
+        "TRIGGER_TYPE": "SEND_LETTER_HEALTH_CHECK"
+      },
       "keyVault": "",
       "chartLocation": "",
-      "scriptsRequired": []
+      "scriptsRequired": [
+        "create-env-file.sh",
+        "setup-env.sh"
+      ]
     }
   ]
 }
